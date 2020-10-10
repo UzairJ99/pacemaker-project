@@ -1,7 +1,9 @@
 import React from "react";
 import logo from '../images/logo.png';
+// stylesheets
+import '../stylesheets/App.css';
 
-const Register = () =>{
+const RegisterPage = () =>{
   return(
     <div>
             <header className="App-header">
@@ -13,4 +15,4 @@ const Register = () =>{
     </div>
   )
 }
-export default Register
+export default RegisterPage;

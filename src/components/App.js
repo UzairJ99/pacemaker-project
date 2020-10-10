@@ -11,8 +11,8 @@ import * as ROUTES from '../constants/routes.js';
 // components
 import MainPage from './MainPage.js';
 import LandingPage from './LandingPage.js';
-import Login from './LoginPage'
-import Register from './RegisterPage'
+import LoginPage from './LoginPage';
+import RegisterPage from './RegisterPage';
 
 function App() {
   /* Controller for page rendering.
@@ -20,6 +20,7 @@ function App() {
     @path = the url for the page to be rendered. constant values are saved in
     the constants/routes.js file
     inside of Route is the component to be rendered.
+    The landing page route should always be the last route listed.
   */
   return (
     <div className="App">
@@ -28,14 +29,14 @@ function App() {
           <Route path={ROUTES.MAIN}>
             <MainPage />
           </Route>
-          <Route path={ROUTES.LANDING}>
-            <LandingPage />
-          </Route>
           <Route path={ROUTES.LOGIN}>
-            <Login />
+            <LoginPage />
           </Route>
           <Route path={ROUTES.REGISTER}>
-            <Register />
+            <RegisterPage />
+          </Route>
+          <Route path={ROUTES.LANDING}>
+            <LandingPage />
           </Route>
         </Switch>
       </Router>

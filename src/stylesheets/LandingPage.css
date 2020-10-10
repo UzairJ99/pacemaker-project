@@ -1,0 +1,11 @@
+.menuBtn {
+    height: 60px;
+    width: 45%;
+    margin: 10px;
+    font-size: 20px;
+    border-radius: 20px;
+}
+
+.menuBtn:hover {
+    transform: scale(1.02);
+}
