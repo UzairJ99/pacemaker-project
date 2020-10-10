@@ -11,6 +11,8 @@ import * as ROUTES from '../constants/routes.js';
 // components
 import MainPage from './MainPage.js';
 import LandingPage from './LandingPage.js';
+import Login from './LoginPage'
+import Register from './RegisterPage'
 
 function App() {
   /* Controller for page rendering.
@@ -28,6 +30,12 @@ function App() {
           </Route>
           <Route path={ROUTES.LANDING}>
             <LandingPage />
+          </Route>
+          <Route path={ROUTES.LOGIN}>
+            <Login />
+          </Route>
+          <Route path={ROUTES.REGISTER}>
+            <Register />
           </Route>
         </Switch>
       </Router>
