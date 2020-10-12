@@ -1,0 +1,17 @@
+body {
+    overflow-y: hidden;
+}
+
+.leftBar {
+    float: left;
+    width: 300px;
+    border-right: 1px solid rgb(165, 165, 165);
+    height: 100vh;
+    padding: 30px;
+    text-align: left;
+}
+
+h5 {
+    font-size: 17px;
+    margin-top: 7px;
+}
