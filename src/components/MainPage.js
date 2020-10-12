@@ -3,15 +3,13 @@ import React from 'react';
 import '../stylesheets/App.css';
 // components
 import NavbarComponent from './interface/NavbarComponent';
+import Parameters from './interface/Parameters';
 
 const MainPage = () => {
     return (
         <div>
             <NavbarComponent />
-            <h1>System Dashboard</h1>
-            <p>
-                All functionality (buttons, inputs, etc) go on this page.
-            </p>
+            <Parameters/>
         </div>
     );
 }
