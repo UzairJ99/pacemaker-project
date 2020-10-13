@@ -13,7 +13,7 @@ import Alert from 'react-bootstrap/Alert';
 // constants
 import * as ROUTES from '../constants/routes';
 
-const LoginPage = () => {
+const RegisterPage = () => {
     return(
         <div>
         <header className="App-header">
@@ -86,6 +86,7 @@ const SignupFormBase = (props) => {
               clearInfo();
               document.getElementById('emailVal').value = '';
               document.getElementById('passwordVal').value = '';
+              document.getElementById('passwordVal_1').value = '';
   
               // change state to error
               setError(error.message);
@@ -150,5 +151,5 @@ The router will hold track of route history so we can redirect.
 */
 const SignupForm = withRouter(withFirebase(SignupFormBase));
 
-export default LoginPage;
+export default RegisterPage;
 export { SignupForm };
