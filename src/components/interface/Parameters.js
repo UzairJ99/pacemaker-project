@@ -11,17 +11,17 @@ const Parameters = () => {
             <h5>Duty Cycle</h5>
             <input type='number' min='0' max='100'></input>
             <h5>Lower Rate Limit</h5>
-            <input></input>
+            <p>0</p>
             <h5>Upper Rate Limit</h5>
-            <input></input>
+            <p>0</p>
             <h5>Atrial Amplitude</h5>
-            <input></input>
+            <p>0</p>
             <h5>Atrial Pulse Width</h5>
-            <input></input>
+            <p>0</p>
             <h5>Ventricular Amplitude</h5>
-            <input></input>
+            <p>0</p>
             <h5>Ventricular Pulse Width</h5>
-            <input></input>
+            <p>0</p>
         </div>
     );
 }
