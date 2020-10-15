@@ -1,6 +1,6 @@
 import React from "react";
 import logo from '../images/logo.png';
-import {Link, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 // stylesheets
 import '../stylesheets/App.css';
 import '../stylesheets/LoginPage.css';
@@ -64,7 +64,6 @@ const SignupFormBase = (props) => {
 
         // get login info from state
         const {email, password} = userInfo;
-        let passord = document.getElementById("passwordVal").value
         let confirmedPassword = document.getElementById("passwordVal_1").value
         if(password!==confirmedPassword) 
         {

@@ -1,0 +1,10 @@
+.paceModeSelector {
+    left: 300px;
+    margin-left: 300px;
+}
+
+.paceBtn {
+    width: 100%;
+    border-radius: 0;
+    height: 60px;
+}
