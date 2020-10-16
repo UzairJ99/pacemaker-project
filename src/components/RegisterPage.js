@@ -41,7 +41,7 @@ const SignupFormBase = (props) => {
     // initial field values for login
     const initialState = {
         email: '',
-        password: ''
+        password: '',
     }
 
     /*
