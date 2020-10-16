@@ -28,10 +28,10 @@ const PaceMode = () => {
     return (
         <div className='paceModeSelector'>
             <span style={{display: 'flex', minWidth: '100%'}}>
-                <Button variant='secondary' className='paceBtn' onClick={() => {setMode('VOO')}} active={mode == 'VOO' ? true : false}>VOO</Button>
-                <Button variant='secondary' className='paceBtn' onClick={() => {setMode('VVI')}} active={mode == 'VVI' ? true : false} >VVI</Button>
-                <Button variant='secondary' className='paceBtn' onClick={() => {setMode('AOO')}} active={mode == 'AOO' ? true : false} >AOO</Button>
-                <Button variant='secondary' className='paceBtn' onClick={() => {setMode('AAI')}} active={mode == 'AAI' ? true : false} >AAI</Button>
+                <Button variant='secondary' className='paceBtn' onClick={() => {setMode('VOO')}} active={mode === 'VOO' ? true : false}>VOO</Button>
+                <Button variant='secondary' className='paceBtn' onClick={() => {setMode('VVI')}} active={mode === 'VVI' ? true : false} >VVI</Button>
+                <Button variant='secondary' className='paceBtn' onClick={() => {setMode('AOO')}} active={mode === 'AOO' ? true : false} >AOO</Button>
+                <Button variant='secondary' className='paceBtn' onClick={() => {setMode('AAI')}} active={mode === 'AAI' ? true : false} >AAI</Button>
             </span>
             {/* interface panel will use a switch to decide which component to render based on state. */
                 renderInterface(mode)            
