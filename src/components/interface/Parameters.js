@@ -7,21 +7,8 @@ const Parameters = () => {
     return (
         <div className='leftBar'>
             <DeviceConnected />
-            <h4>Parameters</h4>
-            <h5>Duty Cycle</h5>
-            <input type='number' min='0' max='100'></input>
-            <h5>Lower Rate Limit</h5>
-            <p>0</p>
-            <h5>Upper Rate Limit</h5>
-            <p>0</p>
-            <h5>Atrial Amplitude</h5>
-            <p>0</p>
-            <h5>Atrial Pulse Width</h5>
-            <p>0</p>
-            <h5>Ventricular Amplitude</h5>
-            <p>0</p>
-            <h5>Ventricular Pulse Width</h5>
-            <p>0</p>
+            <br></br>
+            <h4>Utility Parameters</h4>          
         </div>
     );
 }

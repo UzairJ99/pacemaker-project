@@ -5,6 +5,9 @@ It will control rendering the view
 import React from 'react';
 import '../../stylesheets/PaceMode.css';
 import Button from 'react-bootstrap/Button';
+// components
+import VOO from '../interface/VOO';
+import VVI from '../interface/VVI';
 
 const PaceMode = () => {
 
@@ -13,9 +16,9 @@ const PaceMode = () => {
     function renderInterface (modeVal) {
         switch(modeVal) {
             case 'VOO': 
-                return <h2>{mode} Interface Goes Here</h2>;
+                return <VOO />;
             case 'VVI':
-                return <h2>{mode} Interface Goes Here</h2>;
+                return <VVI />;
             case 'AOO':
                 return <h2>{mode} Interface Goes Here</h2>;
             case 'AAI':
