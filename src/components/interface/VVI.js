@@ -7,11 +7,7 @@ const VVI = () => {
             <h3>Programmable Parameters</h3>
             <br></br>
             <h5>Lower Rate Limit (ppm)</h5>
-<<<<<<< HEAD
-            <input type='number' min='30' max='175' step='5'></input>
-=======
             <input type='number' min='30' max='170' step='5'></input>
->>>>>>> 9f019ecaf57c7c1bcb3483782584747a8fa7f620
             <h5>Upper Rate Limit (ppm)</h5>
             <input type='number' min='50' max='175' step ='5'></input>
             <h5>Ventricular Amplitude (V)</h5>
@@ -23,11 +19,7 @@ const VVI = () => {
             <h5>VRP</h5>
             <input type='number' min='150' max='500' step='10'></input>
             <h5>Hysteresis</h5>
-<<<<<<< HEAD
-            <input type='number' min='0' max='175' step='5'></input>
-=======
             <input type='number' min='0' max='170' step='5'></input>
->>>>>>> 9f019ecaf57c7c1bcb3483782584747a8fa7f620
             <h5>Rate Smoothing (%)</h5>
             <input type='number' min='0' max='25' step='3'></input>
         </div>
