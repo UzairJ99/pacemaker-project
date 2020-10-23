@@ -6,10 +6,15 @@ import React from 'react';
 import '../../stylesheets/PaceMode.css';
 import Button from 'react-bootstrap/Button';
 // components
+<<<<<<< HEAD
 import AOO from './AOO';
 import AAI from './AAI';
 import VOO from './VOO';
 import VVI from './VVI';
+=======
+import VOO from '../interface/VOO';
+import VVI from '../interface/VVI';
+>>>>>>> 9f019ecaf57c7c1bcb3483782584747a8fa7f620
 
 const PaceMode = () => {
 
@@ -22,9 +27,15 @@ const PaceMode = () => {
             case 'VVI':
                 return <VVI />;
             case 'AOO':
+<<<<<<< HEAD
                 return <AOO />;
             case 'AAI':
                 return <AAI />;
+=======
+                return <h2>{mode} Interface Goes Here</h2>;
+            case 'AAI':
+                return <h2>{mode} Interface Goes Here</h2>;
+>>>>>>> 9f019ecaf57c7c1bcb3483782584747a8fa7f620
             default:
                 return <h2>{mode} Interface Goes Here</h2>;
         }

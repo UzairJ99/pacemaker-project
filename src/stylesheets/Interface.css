@@ -1,0 +1,23 @@
+body {
+    overflow-y: hidden;
+}
+
+.leftBar {
+    left: 0;
+    width: 300px;
+    border-right: 1px solid rgb(165, 165, 165);
+    height: 100vh;
+    padding: 30px;
+    text-align: left;
+    margin-right: 0;
+    position: absolute;
+}
+
+h5 {
+    font-size: 17px;
+    margin-top: 7px;
+}
+
+#signoutBtn:hover {
+    cursor: pointer;
+}
