@@ -3,10 +3,6 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
-
-In the project directory, you can run:
-
 ## Run the App
 
 To run the application in development mode, you'll need node.js installed on your computer.
