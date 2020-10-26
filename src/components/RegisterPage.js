@@ -37,6 +37,7 @@ The signinFormBase will be the main component which will perform all login funct
 SigninForm will be the wrapper component for added features.
 LoginPage will hold these components together at a top level hiearchy.
 */
+var noOfUsers = 0;
 const SignupFormBase = (props) => {
     // initial field values for login
     const initialState = {
@@ -61,36 +62,46 @@ const SignupFormBase = (props) => {
     const handleSignup = (event) => {
         // prevent refresh - we'll lose data if it refreshes the page
         event.preventDefault();
-
         // get login info from state
-        const {email, password} = userInfo;
-        let confirmedPassword = document.getElementById("passwordVal_1").value
-        if(password!==confirmedPassword) 
-        {
-          setInvalidSignup(true)
-          setError("Passwords don't match")
+        if(noOfUsers<10){
+            const {email, password} = userInfo;
+            let confirmedPassword = document.getElementById("passwordVal_1").value
+            if(password!==confirmedPassword) 
+            {
+              setInvalidSignup(true)
+              setError("Passwords don't match")
+            }
+            else{
+              props.firebase.doCreateUser(email, password)
+              .then((authUser) => {
+                  // state is successful login
+                  setInvalidSignup(false);
+                  // clear userInfo
+
+                  //temporary code starts
+                  noOfUsers++;
+                  //temporary code ends
+                  
+                  clearInfo();
+                  // go to main page
+                  props.history.push(ROUTES.MAIN);
+              })
+              .catch(error => {
+                  // clear userInfo and reset values
+                  clearInfo();
+                  document.getElementById('emailVal').value = '';
+                  document.getElementById('passwordVal').value = '';
+                  document.getElementById('passwordVal_1').value = '';
+      
+                  // change state to error
+                  setError(error.message);
+                  setInvalidSignup(true);
+              });
+            }
         }
         else{
-          props.firebase.doCreateUser(email, password)
-          .then((authUser) => {
-              // state is successful login
-              setInvalidSignup(false);
-              // clear userInfo
-              clearInfo();
-              // go to main page
-              props.history.push(ROUTES.MAIN);
-          })
-          .catch(error => {
-              // clear userInfo and reset values
-              clearInfo();
-              document.getElementById('emailVal').value = '';
-              document.getElementById('passwordVal').value = '';
-              document.getElementById('passwordVal_1').value = '';
-  
-              // change state to error
-              setError(error.message);
-              setInvalidSignup(true);
-          });
+            setInvalidSignup(true);
+            setError("Max users limit is 2")
         }
     }
 
