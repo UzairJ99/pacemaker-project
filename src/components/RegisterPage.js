@@ -101,7 +101,7 @@ const SignupFormBase = (props) => {
         }
         else{
             setInvalidSignup(true);
-            setError("Max users limit is 2")
+            setError("Max users limit is 10");
         }
     }
 
