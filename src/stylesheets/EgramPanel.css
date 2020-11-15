@@ -1,14 +1,13 @@
-.paceModeSelector {
+.graphModeSelector {
     left: 300px;
     margin-left: 300px;
     /* used to separate parameters from graphs */
-    max-height: 45vh; 
     overflow-y: scroll;
-    border-bottom: 1px solid rgb(151, 151, 151);
+    /* border-bottom: 1px solid rgb(151, 151, 151); */
 }
 
-.paceBtn {
-    width: 100%;
+.graphBtn {
+    width: 250px;
     border-radius: 0;
-    height: 60px;
+    height: 16vh;
 }
