@@ -5,6 +5,7 @@ import '../stylesheets/App.css';
 import { LogOff } from './interface/NavbarComponent';
 import Parameters from './interface/Parameters';
 import PacingModeNavbar from './interface/PaceMode.js';
+import EgramPanel from './interface/EgramPanel';
 
 const MainPage = () => {
     return (
@@ -12,6 +13,7 @@ const MainPage = () => {
             <LogOff/>
             <Parameters/>
             <PacingModeNavbar/>
+            <EgramPanel />
         </div>
     );
 }
