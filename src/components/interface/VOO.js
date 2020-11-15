@@ -11,9 +11,9 @@ const VOO = () => {
             <h5>Upper Rate Limit (ppm)</h5>
             <input type='number' min='50' max='175' step ='5'></input>
             <h5>Ventricular Amplitude (V)</h5>
-            <input type='number' min='0' max='5' step='0.25'></input>
+            <input type='number' min='0' max='5' step='0.1'></input>
             <h5>Ventricular Pulse Width (ms)</h5>
-            <input type='number' min='0.05' max='1.9' step='0.1'></input>
+            <input type='number' min='0.1' max='30' step='0.1'></input>
         </div>
     );
 }

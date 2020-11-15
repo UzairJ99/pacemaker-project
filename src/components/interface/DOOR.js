@@ -18,14 +18,14 @@ const DOOR = () => {
             <input type='number' min='70' max='300' step ='10'></input>
             
             <h5>Atrial Amplitude (V)</h5>
-            <input type='number' min='0' max='5' step='1.25'></input>
+            <input type='number' min='0' max='5' step='0.1'></input>
             <h5>Atrial Pulse Width (ms)</h5>
-            <input type='number' min='0.05' max='1.9' step='0.1'></input>
+            <input type='number' min='0.1' max='30' step='0.1'></input>
             
             <h5>Ventricular Amplitude (V)</h5>
-            <input type='number' min='0' max='5' step='0.25'></input>
+            <input type='number' min='0' max='5' step='0.1'></input>
             <h5>Ventricular Pulse Width (ms)</h5>
-            <input type='number' min='0.05' max='1.9' step='0.1'></input>
+            <input type='number' min='0.1' max='30' step='0.1'></input>
 
 
             <h5>Activity Threshold</h5>
