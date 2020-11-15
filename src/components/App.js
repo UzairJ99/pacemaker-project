@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -63,4 +63,4 @@ function App(props) {
   );
 }
 
-export default App;
+export default withFirebase(App);
