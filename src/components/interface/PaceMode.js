@@ -10,6 +10,12 @@ import AOO from './AOO';
 import AAI from './AAI';
 import VOO from './VOO';
 import VVI from './VVI';
+import VVIR from './VVIR';
+import VOOR from './VOOR';
+import AOOR from './AOOR';
+import AAIR from './AAIR';
+import DOO from './DOO';
+import DOOR from './DOOR';
 
 const PaceMode = () => {
 
@@ -25,6 +31,18 @@ const PaceMode = () => {
                 return <AOO />;
             case 'AAI':
                 return <AAI />;
+            case 'VOOR':
+                return <VOOR />;
+            case 'VVIR':
+                return <VVIR />;
+            case 'AOOR':
+                return <AOOR />;
+            case 'AAIR':
+                return <AAIR />;
+            case 'DOO':
+                return <DOO />;
+            case 'DOOR':
+                return <DOOR />;
             default:
                 return <h2>{mode} Interface Goes Here</h2>;
         }
