@@ -5,14 +5,16 @@ import '../../../stylesheets/EgramPanel.css';
 const VentricalGraph = () => {
     const [chartData, setChartData] = React.useState({});
 
+    var testLabels = [1,2,3,4,5,6,7,8];
+
     // fetch data from firebase - filled with temporary data for now
     const chart = () => {
         setChartData({
-            labels: [1,2,3,4,5,6,7,8,9,10],
+            labels: testLabels,
             datasets: [{
-                label: 'Ventrical',
+                label: 'Atrial',
                 fill: false,
-                data: [5,3,3,6,12,0,1,7,9,14],
+                data: [],
                 backgroundColor: 'rgb(21, 120, 191)',
                 borderColor: 'rgba(21, 120, 191,0.7)',
                 borderWidth: 4
@@ -32,11 +34,15 @@ const VentricalGraph = () => {
                     responsive: true,
                     scales: {
                         xAxes: [ {
-                        type: 'time',
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Time'
+                        type: "realtime",
+                        realtime: {
+                        onRefresh: function() {
+                            chartData.datasets[0].data.push({
+                            x: Date.now(),
+                            y: Math.random() * 100
+                            });
+                        },
+                        delay: 2000
                         },
                         ticks: {
                             major: {
