@@ -11,3 +11,10 @@
     border-radius: 0;
     height: 16vh;
 }
+
+canvas.chartjs-render-monitor {
+    height: 43vh !important;
+    width: 55vw !important;
+    margin-left: 280px;
+    margin-top: 20px;
+}
