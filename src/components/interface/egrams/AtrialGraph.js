@@ -3,7 +3,7 @@ import {Line} from 'react-chartjs-2';
 import '../../../stylesheets/EgramPanel.css';
 import "chartjs-plugin-streaming";
 
-const AtrialGraph = () => {
+const AtrialGraph = (props) => {
     const [chartData, setChartData] = React.useState({});
 
     var testLabels = [1,2,3,4,5,6,7,8];
@@ -31,8 +31,10 @@ const AtrialGraph = () => {
     return (
         <div>
             <Line data={chartData} 
+                height={props.height}
+                width={props.width}
                 options={{
-                    responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         xAxes: [ {
                         type: "realtime",
@@ -40,15 +42,15 @@ const AtrialGraph = () => {
                         onRefresh: function() {
                             chartData.datasets[0].data.push({
                             x: Date.now(),
-                            y: Math.random() * 100
+                            y: Math.random() * 5
                             });
                         },
-                        delay: 2000
+                        delay: 1000
                         },
                         ticks: {
                             major: {
                             fontStyle: 'bold',
-                            fontColor: '#FF0000'
+                            fontColor: '#303030'
                             }
                         }
                         } ],
@@ -56,7 +58,11 @@ const AtrialGraph = () => {
                         display: true,
                         scaleLabel: {
                             display: true,
-                            labelString: 'value'
+                            labelString: 'Volts'
+                        },
+                        ticks: {
+                            max: 5,
+                            stepSize: 1
                         }
                         } ]
                     }

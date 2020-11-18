@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Line} from 'react-chartjs-2';
 import '../../../stylesheets/EgramPanel.css';
 
-const VentricalGraph = () => {
+const VentricalGraph = (props) => {
     const [chartData, setChartData] = React.useState({});
 
     var testLabels = [1,2,3,4,5,6,7,8];
@@ -12,7 +12,7 @@ const VentricalGraph = () => {
         setChartData({
             labels: testLabels,
             datasets: [{
-                label: 'Atrial',
+                label: 'Ventrical',
                 fill: false,
                 data: [],
                 backgroundColor: 'rgb(21, 120, 191)',
@@ -30,7 +30,10 @@ const VentricalGraph = () => {
     return (
         <div>
             <Line data={chartData} 
+                height ={props.height}
+                width={props.width}
                 options={{
+                    maintainAspectRatio: false,
                     responsive: true,
                     scales: {
                         xAxes: [ {
@@ -39,15 +42,15 @@ const VentricalGraph = () => {
                         onRefresh: function() {
                             chartData.datasets[0].data.push({
                             x: Date.now(),
-                            y: Math.random() * 100
+                            y: Math.random() * 5
                             });
                         },
-                        delay: 2000
+                        delay: 1000
                         },
                         ticks: {
                             major: {
                             fontStyle: 'bold',
-                            fontColor: '#FF0000'
+                            fontColor: '#303030'
                             }
                         }
                         } ],
@@ -55,7 +58,11 @@ const VentricalGraph = () => {
                         display: true,
                         scaleLabel: {
                             display: true,
-                            labelString: 'value'
+                            labelString: 'Volts'
+                        },
+                        ticks: {
+                            max: 5,
+                            stepSize: 1
                         }
                         } ]
                     }

@@ -31,11 +31,16 @@ const EgramPanel = () => {
     function renderGraph(modeVal) {
         switch(modeVal) {
             case 'atrial':
-                return <AtrialGraph />;
+                return <AtrialGraph height={'300vh'} />;
             case 'ventricular':
-                return <VentricalGraph />;
+                return <VentricalGraph height={'300vh'} />;
             case 'both':
-                return <h1>both graphs go here</h1>;
+                return (
+                    <div>
+                        <AtrialGraph height={'160vh'}  />
+                        <VentricalGraph height={'160vh'}  />
+                    </div>
+                );
             default:
                 return <AtrialGraph />;
         }

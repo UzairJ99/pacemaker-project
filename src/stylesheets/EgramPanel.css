@@ -13,8 +13,8 @@
 }
 
 canvas.chartjs-render-monitor {
-    height: 43vh !important;
-    width: 55vw !important;
+    /* height: 43vh !important; */
+    width: 52vw !important;
     margin-left: 280px;
-    margin-top: 20px;
+    margin-top: 12px;
 }
