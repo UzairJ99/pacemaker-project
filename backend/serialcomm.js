@@ -1,71 +1,62 @@
-const serialport = require("serialport"); 
-// const Readline = serialport.parsers.Readline;
-// var readline = require('readline');
-// const { read } = require("fs");
+/*
+server backend file for processing serial communication as well as setup and all backend logic.
+*/
+const baudrate = 115200;
+var port = 8080;
+var docPath = 'c:/node';
+var fs = require('fs');
+var readline = require('readline');
+var rl = readline.createInterface({
+  input: fs.createReadStream('server_config.txt'),
+  output: process.stdout,
+  terminal: false
+})
 
-const serialPort = new serialport("COM7", {
-  baudRate: 115200,
-  // parser: serialport.parsers.readline("\n")
-},{ autoOpen: false })
+rl.on('line', (line) => {
+  console.log(line); // parse line
+})
+
+// set up Express instance using Socket.io package
+var express = require('express');
+var io = require('socket.io');
+
+var app = express();
+var server = app.listen(port);
+var socketServer = io(server); // wrap into socket server
+
+// initialize serial port connection
+var serialport = require("serialport"), 
+    SerialPort = serialport.SerialPort,
+    portName = 'COM7',
+    portConfig = {
+      baudRate: baudrate,
+      parser: serialport.parsers.readline('\n')
+    };
+
+var myPort = new serialport(portName, portConfig)
 .on('error',function(err){
   console.log(err);
 });
 
-// const parser = new Readline();
-// const lineStream = serialPort.pipe(parser);
+app.use(express.static(docPath)); // serve files from the public folder
+app.get('/:name', serveFiles); // GET request for all static file requests
+socketServer.on('connection', openSocket); // web socket listener
 
-// parser.on('data', console.log);
-// serialPort.write('kms\n');
+const serveFiles = (req, res) => {
+  var fileName = req.params.name;
+  res.sendFile(fileName);
+}
 
-// // Read data that is available but keep the stream in "paused mode"
-// serialPort.on('readable', function () {
-//   console.log('Data:', port.read())
-// })
+const openSocket = (socket) => {
+  // display information for socket server address
+  console.log('new user address: ' + socket.handshake.address);
+  socket.emit('message', 'Server listening on address: ' + socket.handshake.address);
 
-// // Switches the port into "flowing mode"
-// serialPort.on('data', function (data) {
-//   console.log('Data:', data)
-// })
+  socket.on('message', (data) => {
+    myPort.write(data); // send data to port
+  });
 
-// // Pipe the data into another stream (like a parser or standard out)
-
-// console.log(parser);
-
-// serialport.parsers = {
-//   ByteLength: require('@serialport/parser-byte-length'),
-//   CCTalk: require('@serialport/parser-cctalk'),
-//   Delimiter: require('@serialport/parser-delimiter'),
-//   Readline: require('@serialport/parser-readline'),
-//   Ready: require('@serialport/parser-ready'),
-//   Regex: require('@serialport/parser-regex'),
-// }
-
-// serialPort.on('open',function(){
-//
-//   //   serialPort.write('main screen turn on', function(err) {
-//   //     if (err) {
-//   //       return console.log('Error on write: ', err.message)
-//   //     }
-//   //   })
-//   
-//   write();
-//   read();
-  
-//     // serialPort.on('data', function(data) {
-//     //   console.log(data);
-//     // });
-// })
-
-
-
-// serialPort.on('open', () => {
-//   write();
-//   read();
-// });
-serialPort.open(err=>{
-  if(err) console.log(err);
-  else{
-    serialPort.write("Hi man im gonna kms!!!!!! and its ur fault!!!!!!! Yo I am sorry");
-    serialPort.read();
-  }
-})
+  myPort.on('data', (data) => {
+    socket.emit('message', data); // send data to client
+  })
+}
