@@ -6,6 +6,11 @@ var Readline = serialport.parsers.Readline;
 var bodyParser = require('body-parser');
 var buffer = Buffer.alloc(5);
 
+// SERIAL COMMUNICATION
+var port = new serialport('COM4',{
+  baudRate: 115200,
+  //parser: new Readline("\r\n")
+})
 
 /*
 Express routing handles packing and sending the data to the 
@@ -26,7 +31,7 @@ const expressPort = 8080;
 app.post('/writeToPort', (req, res) => {
   // set the variables from the post requet
   currentMode = req.body.modeVal.mode
-  console.log(currentMode);
+  // console.log(currentMode);
   
   switch(currentMode){
     case 'VOO':
@@ -53,32 +58,44 @@ app.post('/writeToPort', (req, res) => {
 
   // package data here
   buffer[0] = 0x16; //TO CHECK BEGININNG OF DATA
-  buffer[1] = 0x55; //FOR WRITING
-  //buffer[1] = 0x22; //FOR READING FROM SIMULINK/BOARD  
+  //buffer[1] = 0x55; //FOR WRITING TO SIMULINK
+  buffer[1] = 0x55; //FOR READING FROM SIMULINK/BOARD  
   buffer[2] = mode; //RED
   buffer[3] = 0; //GREEN LED
   buffer[4] = 0; //BLUE
-
-  console.log(buffer);
-
-  //writeToPort(buffer); // uncomment this when done testing API calls
+  if(buffer[1]==0x55){
+    writeToPort(buffer);
+  }
+  if(buffer[1]==0x22){
+    console.log("read");
+      writeToPort(buffer);
+      port.on('readable', function (data) {
+        port.read() 
+      })
+      port.on('data', function (data) {
+        //port.read();
+        console.log(data);
+      })
+  }
+  //console.log(buffer);
+  // if(buffer[1]==0x55){ // uncomment this when done testing API calls
+  //     buffer[1] = 0x22;
+  //     //writeToPort(buffer);
+  // }
+  // if(buffer[1]==0x22){
+  //   port.on('data', function (data) {
+  //     console.log(data);
+  //     })
+  //   }
+  
 })
 
 // initialize express port
 app.listen(expressPort, process.env.IP, () => {
   console.log(`back end express server started on port: ${expressPort}`);
 });
-
-// SERIAL COMMUNICATION
-var port = new serialport('COM7',{
-  baudRate: 115200,
-  //parser: new Readline("\r\n")
-})
-
-
-
 // Pipe the data into another stream (like a parser or standard out)
-var lineStream = port.pipe(new Readline());
+// var lineStream = port.pipe(new Readline());
 
 const writeToPort = (buffer) => {
   port.write(buffer, function(err) {
@@ -98,14 +115,10 @@ const writeToPort = (buffer) => {
 //   //console.log(port.read()); 
 // })
 //Switches the port into "flowing mode"
-if(buffer[1]==0x22){
-port.on('data', function (data) {
-  console.log(data);
-  })
-}
-lineStream.on('data', function (data) {
-  console.log('Data:', data.toString('utf8'));
-});
+
+// lineStream.on('data', function (data) {
+//   console.log('Data:', data.toString('utf8'));
+// });
 
 
 
