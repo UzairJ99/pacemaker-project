@@ -21,6 +21,7 @@ is called to actually write to the port.
 var app = express();
 var mode = 0;
 var currentMode = 0;
+var action = 0;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -30,7 +31,8 @@ const expressPort = 8080;
 
 app.post('/writeToPort', (req, res) => {
   // set the variables from the post requet
-  currentMode = req.body.modeVal.mode
+  currentMode = req.body.modeVal
+  action = req.body.value;
   // console.log(currentMode);
   
   switch(currentMode){
@@ -58,11 +60,10 @@ app.post('/writeToPort', (req, res) => {
 
   // package data here
   buffer[0] = 0x16; //TO CHECK BEGININNG OF DATA
-  //buffer[1] = 0x55; //FOR WRITING TO SIMULINK
-  buffer[1] = 0x55; //FOR READING FROM SIMULINK/BOARD  
-  buffer[2] = mode; //RED
-  buffer[3] = 0; //GREEN LED
-  buffer[4] = 0; //BLUE
+  buffer[1] = action; //FOR READING FROM SIMULINK/BOARD  
+  buffer[2] = mode; 
+  buffer[3] = 0; 
+  buffer[4] = 0;
   if(buffer[1]==0x55){
     writeToPort(buffer);
   }
