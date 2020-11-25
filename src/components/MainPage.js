@@ -13,7 +13,6 @@ const MainPage = () => {
             <LogOff/>
             <Parameters/>
             <PacingModeNavbar/>
-            <EgramPanel />
         </div>
     );
 }
