@@ -1,6 +1,6 @@
 .graphModeSelector {
-    left: 300px;
-    margin-left: 300px;
+    left: 20px;
+    margin-left: 20px;
     /* used to separate parameters from graphs */
     overflow-y: scroll;
     /* border-bottom: 1px solid rgb(151, 151, 151); */
