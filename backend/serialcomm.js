@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var buffer = Buffer.alloc(5);
 
 // SERIAL COMMUNICATION
-var port = new serialport('COM4',{
+var port = new serialport('COM7',{
   baudRate: 115200,
   //parser: new Readline("\r\n")
 })
@@ -32,7 +32,7 @@ const expressPort = 8080;
 app.post('/writeToPort', (req, res) => {
   // set the variables from the post requet
   currentMode = req.body.modeVal
-  action = req.body.value;
+  action = req.body.action;
   // console.log(currentMode);
   
   switch(currentMode){
@@ -61,10 +61,11 @@ app.post('/writeToPort', (req, res) => {
   // package data here
   buffer[0] = 0x16; //TO CHECK BEGININNG OF DATA
   buffer[1] = action; //FOR READING FROM SIMULINK/BOARD  
-  buffer[2] = mode; 
+  buffer[2] = 0; 
   buffer[3] = 0; 
-  buffer[4] = 0;
+  buffer[4] = mode;
   if(buffer[1]==0x55){
+    console.log('write')
     writeToPort(buffer);
   }
   if(buffer[1]==0x22){
