@@ -2,9 +2,9 @@
     left: 300px;
     margin-left: 300px;
     /* used to separate parameters from graphs */
-    max-height: 45vh; 
+    max-height: 90vh; 
     overflow-y: scroll;
-    border-bottom: 1px solid rgb(151, 151, 151);
+    /* removed border bottom and set max-height to 90vh for scrollbar to work */
 }
 
 .paceBtn {
