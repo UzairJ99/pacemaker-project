@@ -4,14 +4,16 @@ var cors = require('cors');
 // const { database } = require('firebase-functions/lib/providers/firestore');
 var Readline = serialport.parsers.Readline;
 var bodyParser = require('body-parser');
-var buffer = Buffer.alloc(5);
+var buffer = Buffer.alloc(39);
 
 // SERIAL COMMUNICATION
-var port = new serialport('COM7',{
+var port = new serialport('COM4',{
   baudRate: 115200,
   //parser: new Readline("\r\n")
 })
-
+ for(let i=2; i<39; i++){
+   buffer[i] = 0;
+ }
 /*
 Express routing handles packing and sending the data to the 
 pacemaker using post requests.  The data is taken from
@@ -28,7 +30,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 const expressPort = 8080;
-
+//testing
+// function dec2bin(dec){
+//   return (dec >>> 0).toString(2);
+// }
+// var a = new Array(32);
+// a =[dec2bin(32)];
+// console.log(a);
+//
 app.post('/writeToPort', (req, res) => {
   // set the variables from the post requet
   currentMode = req.body.modeVal
@@ -56,14 +65,24 @@ app.post('/writeToPort', (req, res) => {
       break;
     default:
       mode = 1;
-  }
+  } 
+//teting
+
 
   // package data here
+
   buffer[0] = 0x16; //TO CHECK BEGININNG OF DATA
   buffer[1] = action; //FOR READING FROM SIMULINK/BOARD  
   buffer[2] = 0; 
-  buffer[3] = mode; 
-  buffer[4] = 0;
+  buffer[3] = 2; //MODE
+  buffer[4] = 0; 
+  buffer[11]= 00; //Pulse Amp = 5V
+  buffer[12]= 00;
+  buffer[13]= 0xa0;
+  buffer[14]= 0x40;
+  buffer[15]=30; // PPM
+  buffer[16]=10; //Pulse width
+
   if(buffer[1]==0x55){
     console.log('write')
     writeToPort(buffer);

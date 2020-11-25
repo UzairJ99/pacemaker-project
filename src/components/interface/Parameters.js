@@ -8,7 +8,8 @@ const Parameters = () => {
         <div className='leftBar'>
             <DeviceConnected />
             <br></br>
-            <h4>Utility Parameters</h4>          
+            <h4>Utility Parameters</h4>   
+
         </div>
     );
 }

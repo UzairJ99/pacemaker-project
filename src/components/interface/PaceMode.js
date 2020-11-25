@@ -2,7 +2,7 @@
 This navbar component will let the user select which pacing mode interface to display on the page.
 It will control rendering the view
 */
-import React from 'react';
+import React, {useEffect} from 'react';
 import '../../stylesheets/PaceMode.css';
 import Button from 'react-bootstrap/Button';
 // components
