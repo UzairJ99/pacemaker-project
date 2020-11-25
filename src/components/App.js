@@ -17,6 +17,7 @@ import RegisterPage from './RegisterPage';
 // authorization
 import { withFirebase } from './Firebase/index';
 
+
 function App(props) {
   /* Controller for page rendering.
     React Router uses the Switch cases to determine which route was reached.

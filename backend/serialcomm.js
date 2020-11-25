@@ -11,9 +11,9 @@ var port = new serialport('COM4',{
   baudRate: 115200,
   //parser: new Readline("\r\n")
 })
-for(let i=2; i<39; i++){
-  buffer[i] = 0;
-}
+ for(let i=2; i<39; i++){
+   buffer[i] = 0;
+ }
 /*
 Express routing handles packing and sending the data to the 
 pacemaker using post requests.  The data is taken from
@@ -41,7 +41,7 @@ const expressPort = 8080;
 app.post('/writeToPort', (req, res) => {
   // set the variables from the post requet
   currentMode = req.body.modeVal
-  action = req.body.value;
+  action = req.body.action;
   // console.log(currentMode);
   
   switch(currentMode){
@@ -76,14 +76,15 @@ app.post('/writeToPort', (req, res) => {
   buffer[2] = 0; 
   buffer[3] = 2; //MODE
   buffer[4] = 0; 
-  buffer[11]= 00000000; //Pulse Amp
-  buffer[12]= 00000000;
-  buffer[13]= 00000000;
-  buffer[14]= 00000101;
+  buffer[11]= 00; //Pulse Amp = 5V
+  buffer[12]= 00;
+  buffer[13]= 0xa0;
+  buffer[14]= 0x40;
   buffer[15]=30; // PPM
   buffer[16]=10; //Pulse width
 
   if(buffer[1]==0x55){
+    console.log('write')
     writeToPort(buffer);
   }
   if(buffer[1]==0x22){

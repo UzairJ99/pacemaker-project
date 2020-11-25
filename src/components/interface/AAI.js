@@ -1,10 +1,10 @@
-import React,{useRef} from 'react';
-import '../../stylesheets/PaceMode.css';
+import React,{useState} from 'react';
 import Button from 'react-bootstrap/Button';
-import EgramPanel from './EgramPanel';
+import Modal from './modal';
+import useModal from './useModal';
 
 const AAI = () => {
-    let btnRef = useRef();
+    const {isShowing, toggle} = useModal();
     const read = ()=>{
         fetch('http://localhost:8080/writeToPort', {
             method: 'POST',
@@ -12,14 +12,14 @@ const AAI = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                value: 0x22,
+                action: 0x22,
                 modeVal: 'AAI', // state has to be wrapped in curly braces to send properly
             }),
         })
         .catch((err) => console.log(err))
-        return <EgramPanel/>
-    
-    }    
+        toggle();
+    }
+
     const write = ()=>{
         fetch('http://localhost:8080/writeToPort', {
             method: 'POST',
@@ -27,15 +27,11 @@ const AAI = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                value: 0x55,
+                action: 0x55,
                 modeVal: 'AAI', // state has to be wrapped in curly braces to send properly
             }),
         })
         .catch((err) => console.log(err))
-        if(btnRef.current){
-            btnRef.current.setAttribute("disabled", "disabled");
-          }
-        btnRef.current.removeAttribute("disabled")
     }
     return (
         // min and max from Pacemaker document; step is the incremental value
@@ -60,8 +56,15 @@ const AAI = () => {
             <input type='number' min='0' max='175' step='5'></input>
             <h5>Rate Smoothing (%)</h5>
             <input type='number' min='0' max='25' step='3'></input>
-            <Button ref = {btnRef} variant = "secondary" onClick={() => {write()}}>Write</Button>
-            <Button variant = "secondary" onClick={() => {read()}}>Read</Button>
+            <br></br>
+            <br></br>
+            <Button variant="secondary" onClick={read}>Read</Button>
+            <Button variant="secondary" onClick={write}>Write</Button>
+            {/* <button className="button-default" onClick={toggle}>Show Modal</button> */}
+            <Modal
+                isShowing={isShowing}
+                hide={toggle}
+            />
         </div>
     );
 }
