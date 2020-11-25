@@ -62,8 +62,8 @@ app.post('/writeToPort', (req, res) => {
   buffer[0] = 0x16; //TO CHECK BEGININNG OF DATA
   buffer[1] = action; //FOR READING FROM SIMULINK/BOARD  
   buffer[2] = 0; 
-  buffer[3] = 0; 
-  buffer[4] = mode;
+  buffer[3] = mode; 
+  buffer[4] = 0;
   if(buffer[1]==0x55){
     console.log('write')
     writeToPort(buffer);
