@@ -41,8 +41,8 @@ const AtrialGraph = (props) => {
                         realtime: {
                         onRefresh: function() {
                             chartData.datasets[0].data.push({
-                            x: Date.now(),
-                            y: Math.random() * 5
+                            x: Date.now(), // time
+                            y: Math.random() * 5 // one single point
                             });
                         },
                         delay: 1000

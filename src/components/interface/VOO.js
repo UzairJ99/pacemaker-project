@@ -5,22 +5,28 @@ import useModal from './useModal';
 
 const VOO = () => {
     const {isShowing, toggle} = useModal();
+    const [isReading, setRead] = React.useState(false);
+
     const read = ()=>{
-        fetch('http://localhost:8080/writeToPort', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                action: 0x22,
-                modeVal: 'VOO', // state has to be wrapped in curly braces to send properly
-            }),
-        })
-        .catch((err) => console.log(err))
-        toggle();
+        setRead(true);
+        toggle(); // show graph
+        while(isReading) {
+            fetch('http://localhost:8080/writeToPort', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action: 0x22,
+                    modeVal: 'VOO', // state has to be wrapped in curly braces to send properly
+                }),
+            })
+            .catch((err) => console.log(err))
+        }
     }
 
     const write = ()=>{
+        setRead(false);
         fetch('http://localhost:8080/writeToPort', {
             method: 'POST',
             headers: {
