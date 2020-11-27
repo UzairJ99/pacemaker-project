@@ -6,7 +6,7 @@ var Readline = serialport.parsers.Readline;
 var bodyParser = require('body-parser');;
 
 // SERIAL COMMUNICATION
-var port = new serialport('COM4',{
+var port = new serialport('COM7',{
   baudRate: 115200,
   //parser: new Readline("\r\n")
 })
