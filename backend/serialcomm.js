@@ -2,8 +2,8 @@ var serialport = require('serialport');
 var express = require('express'); // used tosetup routes for backend processing
 var cors = require('cors');
 // const { database } = require('firebase-functions/lib/providers/firestore');
-var Readline = serialport.parsers.Readline;
-var bodyParser = require('body-parser');;
+var ByteLength = require('@serialport/parser-byte-length');
+var bodyParser = require('body-parser');
 
 // SERIAL COMMUNICATION
 var port = new serialport('COM7',{
@@ -33,7 +33,10 @@ const expressPort = 8080;
 // console.log(a);
 //
 app.post('/writeToPort', (req, res) => {
-  var buffer = Buffer.alloc(39)
+  var buffer = Buffer.alloc(44)
+  //var buf = Buffer.alloc(59)
+  var buf;
+
   for(let i=2; i<39; i++){
     buffer[i] = 0;
   }
@@ -41,7 +44,7 @@ app.post('/writeToPort', (req, res) => {
   var mode, currentMode, action = 0;
   var currentMode = 0;
   var action = 0;
-  var LRL, URL, Amp, PW, AVD = 0;
+  var LRL, URL, Amp, PW, AVD, Aamp, Vamp, APW, VPW = 0;
   var Sensitivity, RP, PVARP, Hysteresis, RateSmoothingUp,RateSmoothingDown, ActivityThreshold, ReactionTime,
       RecoveryTime, SensorRate = 0;
 
@@ -54,11 +57,17 @@ app.post('/writeToPort', (req, res) => {
   if(req.body.URL){
     URL = req.body.URL;
   } 
-  if(req.body.Amp){
-    Amp = req.body.Amp;
+  if(req.body.Aamp){
+    Aamp = req.body.Aamp;
   } 
-  if(req.body.PW){
-    PW = req.body.PW;
+  if(req.body.APW){
+    APW = req.body.APW;
+  } 
+  if(req.body.Vamp){
+    Vamp = req.body.Vamp;
+  } 
+  if(req.body.VPW){
+    VPW = req.body.VPW;
   } 
   if(req.body.AVD){
     AVD = req.body.AVD;
@@ -140,9 +149,9 @@ app.post('/writeToPort', (req, res) => {
   buffer[2] = mode; //MODE
   buffer.writeFloatLE(Sensitivity,3); //Atrial Sensitivity
   buffer.writeFloatLE(Sensitivity,7);//Ventricular Sensitivity
-  buffer.writeFloatLE(Amp,11);//Pulse Amp
+  buffer.writeFloatLE(Vamp,11);//Vent_Pulse Amp
   buffer[15]=LRL; // LRL OR PPM 
-  buffer[16]=PW; //Pulse width
+  buffer[16]=VPW; //Ventricular Pulse width
   buffer.writeUInt16LE(RP,17); //Ref Period
   buffer.writeUInt16LE(PVARP,19); //PVARP
   buffer[21]=0; //Hysteresis enable
@@ -155,8 +164,9 @@ app.post('/writeToPort', (req, res) => {
   buffer.writeFloatLE(ActivityThreshold,30);//Activity Threshold
   buffer[34]=ReactionTime;//Reaction Time in seconds
   buffer.writeFloatLE(RecoveryTime,35);//Recovery Time in Minutes
-
-  
+  buffer[39] = APW; //Atrial Pulse Width
+  buffer.writeFloatLE(Aamp,40); // Atr Pulse Amp
+   
   //TEST
 
   //TEST DONE
@@ -165,12 +175,13 @@ app.post('/writeToPort', (req, res) => {
     writeToPort(buffer);
   }
   if(buffer[1]==0x22){
+    const parser = port.pipe(new ByteLength({length: 58}))
     console.log("read");
       writeToPort(buffer);
-      port.on('readable', function (data) {
-        port.read() 
-      })
-      port.on('data', function (data) {
+      // port.on('readable', function (data) {
+      //   port.read() 
+      // })
+      parser.on('data', function (data) {
         port.read();
         console.log(data);
       })

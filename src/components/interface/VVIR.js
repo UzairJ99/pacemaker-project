@@ -32,8 +32,8 @@ const VVIR = () => {
                 modeVal: 'VVIR',
                 LRL: document.getElementById("LRL").value,
                 URL: document.getElementById("URL").value,
-                Amp: document.getElementById("Amp").value,
-                PW: document.getElementById("PW").value,
+                Vamp: document.getElementById("Amp").value,
+                VPW: document.getElementById("PW").value,
                 Sensitivity: document.getElementById("Sensitivity").value,
                 RP: document.getElementById("RP").value,
                 Hysteresis:document.getElementById("Hysteresis").value,
@@ -75,11 +75,12 @@ const VVIR = () => {
             <h5>Rate Smoothing Down(%)</h5>
             <input id="rasmoodown" type='number' min='0' max='100' step='3'></input>
             <h5>Activity Threshold</h5>
+            <h5>Low(0.5)  Medium (0.7)  High (0.9)</h5>
             <input id="ActivityThreshold" type='number' min='0' max='6' step='1'></input>
             <h5>Reaction Time (sec)</h5>
             <input id="ReactionTime" type='number' min='10' max='50' step='10'></input>
             <h5>Recovery Time (min)</h5>
-            <input id="RecoveryTime" type='number' min='2' max='16' step='1'></input>
+            <input id="RecoveryTime" type='number' min='0.1' max='16' step='0.1'></input>
             <Button variant="secondary" onClick={read}>Read</Button>
             <Button variant="secondary" onClick={write}>Write</Button>
             <Modal

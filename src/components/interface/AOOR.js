@@ -33,8 +33,8 @@ const AOOR = () =>{
               modeVal: 'AOOR', 
               LRL: document.getElementById("LRL").value,
               URL: document.getElementById("URL").value,
-              Amp: document.getElementById("Amp").value,
-              PW: document.getElementById("PW").value,
+              Aamp: document.getElementById("Aamp").value,
+              APW: document.getElementById("APW").value,
               ActivityThreshold: document.getElementById("ActivityThreshold").value,
               ReactionTime: document.getElementById("ReactionTime").value,
               RecoveryTime: document.getElementById("RecoveryTime").value,
@@ -55,15 +55,16 @@ const AOOR = () =>{
         <h5>Maximum Sensor Rate(ppm)</h5>
         <input id="SensorRate" type = "number" min = "50" max = "175" step ="5"></input>
         <h5>Atrial Amplitude (V)</h5>
-        <input id="Amp" type='number' min='0' max='5' step='0.1'></input>
+        <input id="Aamp" type='number' min='0' max='5' step='0.1'></input>
         <h5>Atrial PulseWidth (ms)</h5>
-        <input id="PW" type='number' min='0.1' max='30' step='0.1'></input>
-        <h5>Activity threshold</h5>
+        <input id="APW" type='number' min='0.1' max='30' step='0.1'></input>
+        <h5>Activity threshold</h5> 
+        <h5>Low(0.5)  Medium (0.7)  High (0.9)</h5>
         <input id="ActivityThreshold" type = "number" min = "0" max = "3" step ="0.1"></input>
         <h5>Reaction Time(sec)</h5>
         <input id="ReactionTime" type = "number" min = "10" max = "50" step ="10"></input>
         <h5>Recovery Time(min)</h5>
-        <input id="RecoveryTime" type = "number" min = "2" max = "16" step ="1"></input>
+        <input id="RecoveryTime" type = "number" min = "0.1" max = "16" step ="0.1"></input>
     
         <Button variant="secondary" onClick={read}>Read</Button>
         <Button variant="secondary" onClick={write}>Write</Button>
