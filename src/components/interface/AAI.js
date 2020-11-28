@@ -32,8 +32,8 @@ const AAI = () => {
                 modeVal: 'AAI', // state has to be wrapped in curly braces to send properly
                 LRL: document.getElementById("LRL").value,
                 URL: document.getElementById("URL").value,
-                Amp: document.getElementById("Amp").value,
-                PW: document.getElementById("PW").value,
+                Aamp: document.getElementById("Amp").value,
+                APW: document.getElementById("PW").value,
                 Sensitivity: document.getElementById("Sensitivity").value,
                 RP: document.getElementById("ARP").value,
                 PVARP: document.getElementById("PVARP").value,

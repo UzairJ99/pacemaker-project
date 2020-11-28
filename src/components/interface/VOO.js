@@ -31,8 +31,8 @@ const VOO = () => {
                 modeVal: 'VOO',
                 LRL: document.getElementById("LRL").value,
                 URL: document.getElementById("URL").value,
-                Amp: document.getElementById("Vamp").value,
-                PW: document.getElementById("VPW").value,
+                Vamp: document.getElementById("Vamp").value,
+                VPW: document.getElementById("VPW").value,
             }),
         })
         .catch((err) => console.log(err))

@@ -31,8 +31,8 @@ const AOO = ()=>{
                 modeVal: 'AOO',
                 LRL: document.getElementById("LRL").value,
                 URL: document.getElementById("URL").value,
-                Amp: document.getElementById("Amp").value,
-                PW: document.getElementById("PW").value,
+                Aamp: document.getElementById("Amp").value,
+                APW: document.getElementById("PW").value,
             }),
         })
         .catch((err) => console.log(err))

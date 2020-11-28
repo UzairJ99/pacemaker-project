@@ -34,8 +34,10 @@ const DOOR = () => {
                 URL: document.getElementById("URL").value,
                 SensorRate: document.getElementById("SensorRate").value,
                 AVD: document.getElementById("AVD").value,
-                Amp: document.getElementById("Amp").value,
-                PW: document.getElementById("PW").value,
+                Aamp: document.getElementById("Aamp").value,
+                APW: document.getElementById("APW").value,
+                Vamp: document.getElementById("Vamp").value,
+                VPW: document.getElementById("VPW").value,
                 ActivityThreshold: document.getElementById("ActivityThreshold").value,
                 ReactionTime: document.getElementById("ReactionTime").value,    
                 RecoveryTime: document.getElementById("RecoveryTime").value
@@ -59,17 +61,23 @@ const DOOR = () => {
             <h5>Fix AV Delay (ms)</h5>
             <input id="AVD" type='number' min='70' max='300' step ='10'></input>
             
-            <h5>Atrial/Ventricular Amplitude (V)</h5>
-            <input id="Amp" type='number' min='0' max='5' step='0.1'></input>
-            <h5>Atrial/Ventricular Pulse Width (ms)</h5>
-            <input id="PW" type='number' min='0.1' max='30' step='0.1'></input>
+            <h5>Atrial Amplitude (V)</h5>
+            <input id="Aamp" type='number' min='0' max='5' step='0.1'></input>
+            <h5>Atrial Pulse Width (ms)</h5>
+            <input id="APW" type='number' min='0.1' max='30' step='0.1'></input>
+
+            <h5>Ventricular Amplitude (V)</h5>
+            <input id="Vamp" type='number' min='0' max='5' step='0.1'></input>
+            <h5>Ventricular Pulse Width (ms)</h5>
+            <input id="VPW" type='number' min='0.1' max='30' step='0.1'></input>
 
             <h5>Activity Threshold</h5>
+            <h5>Low(0.5)  Medium (0.7)  High (0.9)</h5>
             <input id="ActivityThreshold" type='number' min='0' max='3' step='0.1'></input>
             <h5>Reaction Time (sec)</h5>
             <input id="ReactionTime" type='number' min='10' max='50' step='1'></input>
             <h5>Recovery Time (min)</h5>
-            <input id="RecoveryTime" type='number' min='2' max='16' step='1'></input>
+            <input id="RecoveryTime" type='number' min='0.1' max='16' step='0.1'></input>
             <Button variant="secondary" onClick={read}>Read</Button>
             <Button variant="secondary" onClick={write}>Write</Button>
             {/* <button className="button-default" onClick={toggle}>Show Modal</button> */}
