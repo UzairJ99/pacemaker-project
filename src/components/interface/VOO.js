@@ -19,16 +19,16 @@ const VOO = () => {
             }),
         })
         .then((res) => {
+            // convert the data from the backend to JSON format
             var data = res.json();
-            console.log(data);
             return data;
         })
+        // process the data
         .then((data) => {
-            console.log(data);
+            // set the graph values to what was retrieved from the backend
             return setValues(data);  
         })
         .catch((err) => console.log(err))
-        console.log(graphValues);
         toggle(); // show graph
     }
 

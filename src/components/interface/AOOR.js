@@ -6,6 +6,7 @@ import useModal from './useModal';
 const AOOR = () =>{
 
   const {isShowing, toggle} = useModal();
+  const [graphValues, setValues] = React.useState([]);
     
   const read = ()=>{
       fetch('http://localhost:8080/writeToPort', {
@@ -18,6 +19,16 @@ const AOOR = () =>{
               modeVal: 'AOOR', // state has to be wrapped in curly braces to send properly
           }),
       })
+      .then((res) => {
+        // convert the data from the backend to JSON format
+        var data = res.json();
+        return data;
+        })
+        // process the data
+        .then((data) => {
+            // set the graph values to what was retrieved from the backend
+            return setValues(data);  
+        })
       .catch((err) => console.log(err))
       toggle();
   }
@@ -70,9 +81,10 @@ const AOOR = () =>{
         <Button variant="secondary" onClick={write}>Write</Button>
         {/* <button className="button-default" onClick={toggle}>Show Modal</button> */}
         <Modal
-            isShowing={isShowing}
-            hide={toggle}
-        />
+                isShowing={isShowing}
+                hide={toggle}
+                values = {graphValues}
+            />
     
     </div>
   )

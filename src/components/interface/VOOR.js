@@ -5,43 +5,54 @@ import useModal from './useModal';
 
 const VOOR = () => {
     const {isShowing, toggle} = useModal();
-    
-  const read = ()=>{
-      fetch('http://localhost:8080/writeToPort', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              action: 0x22,
-              modeVal: 'VOOR', // state has to be wrapped in curly braces to send properly
-          }),
-      })
-      .catch((err) => console.log(err))
-      toggle();
-  }
+    const [graphValues, setValues] = React.useState([]);
 
-  const write = ()=>{
-      fetch('http://localhost:8080/writeToPort', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              action: 0x55,
-              modeVal: 'VOOR', 
-              LRL: document.getElementById("LRL").value,
-              URL: document.getElementById("URL").value,
-              Vamp: document.getElementById("Vamp").value,
-              VPW: document.getElementById("VPW").value,
-              ActivityThreshold: document.getElementById("ActivityThreshold").value,
-              ReactionTime: document.getElementById("ReactionTime").value,
-              RecoveryTime: document.getElementById("RecoveryTime").value,
-              SensorRate: document.getElementById("SensorRate").value,
-          }),
-      })
-      .catch((err) => console.log(err))
-  }
+    const read = ()=>{
+        fetch('http://localhost:8080/writeToPort', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                action: 0x22,
+                modeVal: 'VOOR', // state has to be wrapped in curly braces to send properly
+            }),
+        })
+        .then((res) => {
+        // convert the data from the backend to JSON format
+        var data = res.json();
+        return data;
+        })
+        // process the data
+        .then((data) => {
+            // set the graph values to what was retrieved from the backend
+            return setValues(data);  
+        })
+        .catch((err) => console.log(err))
+        toggle();
+    }
+
+    const write = ()=>{
+        fetch('http://localhost:8080/writeToPort', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                action: 0x55,
+                modeVal: 'VOOR', 
+                LRL: document.getElementById("LRL").value,
+                URL: document.getElementById("URL").value,
+                Vamp: document.getElementById("Vamp").value,
+                VPW: document.getElementById("VPW").value,
+                ActivityThreshold: document.getElementById("ActivityThreshold").value,
+                ReactionTime: document.getElementById("ReactionTime").value,
+                RecoveryTime: document.getElementById("RecoveryTime").value,
+                SensorRate: document.getElementById("SensorRate").value,
+            }),
+        })
+        .catch((err) => console.log(err))
+    }
     return (
         // min and max from Pacemaker document; step is the incremental value
         <div>
@@ -72,6 +83,7 @@ const VOOR = () => {
             <Modal
                 isShowing={isShowing}
                 hide={toggle}
+                values={graphValues}
             />
         
         </div>
