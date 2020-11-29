@@ -4,8 +4,9 @@ import Modal from './modal';
 import useModal from './useModal';
 
 const VVIR = () => {
-
     const {isShowing, toggle} = useModal();
+    const [graphValues, setValues] = React.useState([]);
+
     const read = ()=>{
         fetch('http://localhost:8080/writeToPort', {
             method: 'POST',
@@ -16,6 +17,16 @@ const VVIR = () => {
                 action: 0x22,
                 modeVal: 'VVIR', // state has to be wrapped in curly braces to send properly
             }),
+        })
+        .then((res) => {
+            // convert the data from the backend to JSON format
+            var data = res.json();
+            return data;
+        })
+        // process the data
+        .then((data) => {
+            // set the graph values to what was retrieved from the backend
+            return setValues(data);  
         })
         .catch((err) => console.log(err))
         toggle();
@@ -86,6 +97,7 @@ const VVIR = () => {
             <Modal
                 isShowing={isShowing}
                 hide={toggle}
+                values={graphValues}
             />
         </div>
     );

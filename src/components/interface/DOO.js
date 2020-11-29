@@ -5,6 +5,7 @@ import useModal from './useModal';
 
 const DOO = () => {
     const {isShowing, toggle} = useModal();
+    const [graphValues, setValues] = React.useState([]);
     
     const read = ()=>{
         fetch('http://localhost:8080/writeToPort', {
@@ -16,6 +17,16 @@ const DOO = () => {
                 action: 0x22,
                 modeVal: 'DOO', // state has to be wrapped in curly braces to send properly
             }),
+        })
+        .then((res) => {
+            // convert the data from the backend to JSON format
+            var data = res.json();
+            return data;
+        })
+        // process the data
+        .then((data) => {
+            // set the graph values to what was retrieved from the backend
+            return setValues(data);  
         })
         .catch((err) => console.log(err))
         toggle();
@@ -69,6 +80,7 @@ const DOO = () => {
             <Modal
                 isShowing={isShowing}
                 hide={toggle}
+                values={graphValues}
             />
         </div>
     );
