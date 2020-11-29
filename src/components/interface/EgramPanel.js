@@ -11,8 +11,14 @@ import '../../stylesheets/EgramPanel.css';
 import AtrialGraph from './egrams/AtrialGraph';
 import VentricalGraph from './egrams/VentricalGraph';
 
-const EgramPanel = () => {
+const EgramPanel = (props) => {
     const [mode, setMode] = React.useState('atrial');
+
+    // grab data points 
+    var atrialValues = props.values[0];
+    var ventValues = props.values[1];
+
+    console.log(atrialValues);
 
     // fetch and import data from firebase here
     const getAtrialData = () => {
@@ -31,18 +37,18 @@ const EgramPanel = () => {
     function renderGraph(modeVal) {
         switch(modeVal) {
             case 'atrial':
-                return <AtrialGraph height={'300vh'} />;
+                return <AtrialGraph dataPoints={atrialValues} height={'300vh'} />;
             case 'ventricular':
-                return <VentricalGraph height={'300vh'} />;
+                return <VentricalGraph dataPoints={ventValues} height={'300vh'} />;
             case 'both':
                 return (
                     <div>
-                        <AtrialGraph height={'160vh'}  />
-                        <VentricalGraph height={'160vh'}  />
+                        <AtrialGraph dataPoints={atrialValues} height={'160vh'}  />
+                        <VentricalGraph dataPoints={ventValues} height={'160vh'}  />
                     </div>
                 );
             default:
-                return <AtrialGraph />;
+                return <AtrialGraph dataPoints={atrialValues} />;
         }
         
     }

@@ -8,6 +8,9 @@ const AtrialGraph = (props) => {
 
     var testLabels = [1,2,3,4,5,6,7,8];
 
+    var dataPoints = props.dataPoints;
+    console.log(dataPoints);
+
     // fetch data from firebase - filled with temporary data for now
     const chart = () => {
         setChartData({
@@ -42,7 +45,7 @@ const AtrialGraph = (props) => {
                         onRefresh: function() {
                             chartData.datasets[0].data.push({
                             x: Date.now(), // time
-                            y: Math.random() * 5 // one single point
+                            y: dataPoints
                             });
                         },
                         delay: 1000

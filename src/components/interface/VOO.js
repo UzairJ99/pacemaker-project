@@ -5,28 +5,34 @@ import useModal from './useModal';
 
 const VOO = () => {
     const {isShowing, toggle} = useModal();
-    const [isReading, setRead] = React.useState(false);
+    const [graphValues, setValues] = React.useState([]);
 
     const read = ()=>{
-        setRead(true);
+        fetch('http://localhost:8080/writeToPort', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                action: 0x22,
+                modeVal: 'VOO', // state has to be wrapped in curly braces to send properly
+            }),
+        })
+        .then((res) => {
+            var data = res.json();
+            console.log(data);
+            return data;
+        })
+        .then((data) => {
+            console.log(data);
+            return setValues(data);  
+        })
+        .catch((err) => console.log(err))
+        console.log(graphValues);
         toggle(); // show graph
-        while(isReading) {
-            fetch('http://localhost:8080/writeToPort', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    action: 0x22,
-                    modeVal: 'VOO', // state has to be wrapped in curly braces to send properly
-                }),
-            })
-            .catch((err) => console.log(err))
-        }
     }
 
     const write = ()=>{
-        setRead(false);
         fetch('http://localhost:8080/writeToPort', {
             method: 'POST',
             headers: {
@@ -61,6 +67,7 @@ const VOO = () => {
             <Modal
                 isShowing={isShowing}
                 hide={toggle}
+                values = {graphValues}
             />
         </div>
     );

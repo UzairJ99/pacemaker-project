@@ -65,7 +65,7 @@ const VVIR = () => {
             <h5>Ventricular Pulse Width (ms)</h5>
             <input id="PW" type='number' min='0.1' max='30' step='0.1'></input>
             <h5>Ventricular Sensitivity (mV)</h5>
-            <input id="Sensitivity" type='number' min='1' max='10' step='0.5'></input>
+            <input id="Sensitivity" type='number' min='0' max='10' step='0.5'></input>
             <h5>VRP</h5>
             <input id="RP" type='number' min='150' max='500' step='10'></input>
             <h5>Hysteresis</h5>

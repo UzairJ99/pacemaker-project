@@ -6,7 +6,7 @@ var ByteLength = require('@serialport/parser-byte-length');
 var bodyParser = require('body-parser');
 
 // SERIAL COMMUNICATION
-var port = new serialport('COM7',{
+var port = new serialport('COM9',{
   baudRate: 115200,
   //parser: new Readline("\r\n")
 })
@@ -33,13 +33,14 @@ const expressPort = 8080;
 // console.log(a);
 //
 app.post('/writeToPort', (req, res) => {
-  var buffer = Buffer.alloc(44)
-  //var buf = Buffer.alloc(59)
-  var buf;
+  var buffer = Buffer.alloc(44);
+  var ATR_Signal;
+  var VENT_Signal;
+  var ATR_Signal_val;
+  var VENT_Signal_val;
 
-  for(let i=2; i<39; i++){
-    buffer[i] = 0;
-  }
+  var outputValues = [];
+
   // default values all set to zero
   var mode, currentMode, action = 0;
   var currentMode = 0;
@@ -139,11 +140,11 @@ app.post('/writeToPort', (req, res) => {
     default:
       mode = 1;
   } 
-//teting
-
 
   // package data here
-
+  for(let i=2; i<44; i++){
+    buffer[i] = 0;
+  }
   buffer[0] = 0x16; //TO CHECK BEGININNG OF DATA
   buffer[1] = action; //FOR READING FROM SIMULINK/BOARD  
   buffer[2] = mode; //MODE
@@ -166,38 +167,44 @@ app.post('/writeToPort', (req, res) => {
   buffer.writeFloatLE(RecoveryTime,35);//Recovery Time in Minutes
   buffer[39] = APW; //Atrial Pulse Width
   buffer.writeFloatLE(Aamp,40); // Atr Pulse Amp
-   
-  //TEST
-
-  //TEST DONE
+  
+  // write
   if(buffer[1]==0x55){
     console.log('write')
     writeToPort(buffer);
   }
+
+  // read
   if(buffer[1]==0x22){
     const parser = port.pipe(new ByteLength({length: 58}))
     console.log("read");
-      writeToPort(buffer);
-      // port.on('readable', function (data) {
-      //   port.read() 
-      // })
-      parser.on('data', function (data) {
-        port.read();
-        console.log(data);
-      })
+    writeToPort(buffer);
+    parser.on('data', function (data) {
+      port.read();
+      vent_Signal = data.slice(42,50);
+      VENT_Signal_val = (vent_Signal.readDoubleLE(0));
+      ATR_Signal_val = (data.readDoubleLE(50));
+      outputValues = [ATR_Signal_val, VENT_Signal_val];
+      console.log(outputValues);
+      res.send(outputValues);
+    })
   }
-  //console.log(buffer);
-  // if(buffer[1]==0x55){ // uncomment this when done testing API calls
-  //     buffer[1] = 0x22;
-  //     //writeToPort(buffer);
-  // }
-  // if(buffer[1]==0x22){
-  //   port.on('data', function (data) {
-  //     console.log(data);
-  //     })
-  //   }
-  
 })
+
+
+// reading from port
+app.get('/readFromPort', (req, res) => {
+  var buffer = Buffer.alloc(58);
+
+  for(let i=2; i<58; i++){
+    buffer[i] = 0;
+  }
+
+  buffer[0] = 0x16; //TO CHECK BEGININNG OF DATA
+  buffer[1] = 0x55; //FOR READING FROM SIMULINK/BOARD  
+  buffer[2] = mode; //MODE
+
+});
 
 // initialize express port
 app.listen(expressPort, process.env.IP, () => {
