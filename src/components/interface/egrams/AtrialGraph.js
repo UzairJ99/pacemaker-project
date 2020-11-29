@@ -42,10 +42,13 @@ const AtrialGraph = (props) => {
                         xAxes: [ {
                         type: "realtime",
                         realtime: {
-                        onRefresh: function() {
-                            chartData.datasets[0].data.push({
-                            x: Date.now(), // time
-                            y: dataPoints
+                            refresh: 1000,
+                            onRefresh: function() {
+                                var points = chartData.datasets[0].data;
+                                if(points.length>50) points.shift();
+                                points.push({
+                                x: Date.now(), // time
+                                y: dataPoints
                             });
                         },
                         delay: 1000
@@ -65,7 +68,7 @@ const AtrialGraph = (props) => {
                         },
                         ticks: {
                             max: 5,
-                            stepSize: 1
+                            stepSize: 0.1
                         }
                         } ]
                     }

@@ -8,7 +8,6 @@ var bodyParser = require('body-parser');
 // SERIAL COMMUNICATION
 var port = new serialport('COM9',{
   baudRate: 115200,
-  //parser: new Readline("\r\n")
 })
 /*
 Express routing handles packing and sending the data to the 
@@ -181,30 +180,35 @@ app.post('/writeToPort', (req, res) => {
     writeToPort(buffer);
     parser.on('data', function (data) {
       port.read();
+      var Mode = data.readInt8(0);
+      var Atrial_Sensitivity = data.readFloatLE(1);
+      var Ventricular_Sensitivity = data.readFloatLE(5);
+      var Vent_Amplitude = data.readFloatLE(9);
+      var LRL = data.readInt8(13);
+      var Vent_Pulse_Width = data.readInt8(14);
+      var Refactory_Period = data.readInt16LE(15);
+      var PVARP = data.readInt16LE(17);
+      var Hysteresis_enable = data.readInt8(19);
+      var Hysteresis_Period= data.readInt16LE(20);
+      var URL=data.readInt8(22);
+      var Rate_Smoothing_Up = data.readInt8(23);
+      var Rate_Smoothing_Down = data.readInt8(24);
+      var Fixed_AV_Delay = data.readInt16LE(25);
+      var Maximum_Sensor_limit = data.readInt8(27);
+      var Activity_Threshold = data.readFloatLE(28);
+      var Reaction_Time = data.readInt8(32);
+      var Recovery_Time = data.readFloatLE(33);
+      var Atr_Pulse_Width =data.readInt8(37);
+      var Atr_Pulse_Amplitude = data.readFloatLE(38);
       vent_Signal = data.slice(42,50);
       VENT_Signal_val = (vent_Signal.readDoubleLE(0));
       ATR_Signal_val = (data.readDoubleLE(50));
-      outputValues = [ATR_Signal_val, VENT_Signal_val];
-      console.log(outputValues);
+      outputValues = [ATR_Signal_val, VENT_Signal_val, Mode, Atrial_Sensitivity, Ventricular_Sensitivity, Vent_Amplitude, LRL, Vent_Pulse_Width, Refactory_Period, PVARP, Hysteresis_enable, Hysteresis_Period, URL, Rate_Smoothing_Up, Rate_Smoothing_Down, Fixed_AV_Delay, Maximum_Sensor_limit, Activity_Threshold, Reaction_Time, Recovery_Time, Atr_Pulse_Width,Atr_Pulse_Amplitude];
+      //console.log(outputValues);
       res.send(outputValues);
     })
   }
 })
-
-
-// reading from port
-app.get('/readFromPort', (req, res) => {
-  var buffer = Buffer.alloc(58);
-
-  for(let i=2; i<58; i++){
-    buffer[i] = 0;
-  }
-
-  buffer[0] = 0x16; //TO CHECK BEGININNG OF DATA
-  buffer[1] = 0x55; //FOR READING FROM SIMULINK/BOARD  
-  buffer[2] = mode; //MODE
-
-});
 
 // initialize express port
 app.listen(expressPort, process.env.IP, () => {

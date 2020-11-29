@@ -18,7 +18,7 @@ const EgramPanel = (props) => {
     var atrialValues = props.values[0];
     var ventValues = props.values[1];
 
-    console.log(atrialValues);
+    //console.log(atrialValues);
 
     // fetch and import data from firebase here
     const getAtrialData = () => {
