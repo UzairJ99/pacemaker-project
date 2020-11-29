@@ -6,7 +6,7 @@ var ByteLength = require('@serialport/parser-byte-length');
 var bodyParser = require('body-parser');
 
 // SERIAL COMMUNICATION
-var port = new serialport('COM9',{
+var port = new serialport('COM4',{
   baudRate: 115200,
 })
 /*

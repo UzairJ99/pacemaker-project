@@ -7,7 +7,7 @@ const VentricalGraph = (props) => {
 
     var testLabels = [1,2,3,4,5,6,7,8];
 
-    var dataPoints = props.dataPoints;
+    var dataPoints = (props.dataPoints)*3.3;
     console.log(dataPoints);
 
     // fetch data from firebase - filled with temporary data for now

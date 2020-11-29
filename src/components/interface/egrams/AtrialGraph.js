@@ -8,7 +8,7 @@ const AtrialGraph = (props) => {
 
     var testLabels = [1,2,3,4,5,6,7,8];
 
-    var dataPoints = props.dataPoints;
+    var dataPoints = (props.dataPoints)*3.3;
     console.log(dataPoints);
 
     // fetch data from firebase - filled with temporary data for now
@@ -37,12 +37,24 @@ const AtrialGraph = (props) => {
                 height={props.height}
                 width={props.width}
                 options={{
+                    animation: {
+                    duration: 0 // general animation time
+                    },
+                    hover: {
+                    animationDuration: 0 // duration of animations when hovering an item
+                    },
+                    elements: {
+                        line: {
+                            tension: 0 // disables bezier curves
+                        }
+                    },
+                    responsiveAnimationDuration: 0, // animation duration after a resize
                     maintainAspectRatio: false,
                     scales: {
                         xAxes: [ {
                         type: "realtime",
                         realtime: {
-                            refresh: 1000,
+                            refresh: 1,
                             onRefresh: function() {
                                 var points = chartData.datasets[0].data;
                                 if(points.length>50) points.shift();

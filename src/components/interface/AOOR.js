@@ -38,8 +38,7 @@ const AOOR = () =>{
           });
           if(!response.ok){throw Error(response.statusText);};
           const json = await response.json()
-          setValues(json);
-          console.log(graphValues, json);
+          setValues([json[0], json[1]]);
       }
       catch (err) {
           console.log(err);
