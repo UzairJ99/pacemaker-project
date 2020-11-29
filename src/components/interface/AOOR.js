@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from './modal';
 import useModal from './useModal';
@@ -7,33 +7,53 @@ const AOOR = () =>{
 
   const {isShowing, toggle} = useModal();
   const [graphValues, setValues] = React.useState([]);
-    
+  const [isReading, setRead] = React.useState(false);
+  const [refresh, setRefresh] = React.useState(0);
+
+  // update values for graph
+  useEffect(() => {
+      setInterval(()=> {
+          setRefresh((prevTemp) => prevTemp + 1)
+      }, 1);
+  }, [])
+
+  useEffect(() => {
+      if(isReading) {
+          fetchData();
+      }
+  }, [refresh])
+
+  // asynchronous fetch function for retrieving data from backend
+  const fetchData = async() => {
+      try{
+          const response = await fetch('http://localhost:8080/writeToPort', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                  action: 0x22,
+                  modeVal: 'AOOR', // state has to be wrapped in curly braces to send properly
+              }),
+          });
+          if(!response.ok){throw Error(response.statusText);};
+          const json = await response.json()
+          setValues(json);
+          console.log(graphValues, json);
+      }
+      catch (err) {
+          console.log(err);
+      }
+  }
+
   const read = ()=>{
-      fetch('http://localhost:8080/writeToPort', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              action: 0x22,
-              modeVal: 'AOOR', // state has to be wrapped in curly braces to send properly
-          }),
-      })
-      .then((res) => {
-        // convert the data from the backend to JSON format
-        var data = res.json();
-        return data;
-        })
-        // process the data
-        .then((data) => {
-            // set the graph values to what was retrieved from the backend
-            return setValues(data);  
-        })
-      .catch((err) => console.log(err))
-      toggle();
+      setRead(true);
+      fetchData(); // first time
+      toggle(); // show graph
   }
 
   const write = ()=>{
+      setRead(false);
       fetch('http://localhost:8080/writeToPort', {
           method: 'POST',
           headers: {

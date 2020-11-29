@@ -7,6 +7,9 @@ const VentricalGraph = (props) => {
 
     var testLabels = [1,2,3,4,5,6,7,8];
 
+    var dataPoints = props.dataPoints;
+    console.log(dataPoints);
+
     // fetch data from firebase - filled with temporary data for now
     const chart = () => {
         setChartData({
@@ -42,10 +45,10 @@ const VentricalGraph = (props) => {
                         onRefresh: function() {
                             chartData.datasets[0].data.push({
                             x: Date.now(),
-                            y: Math.random() * 5
+                            y: dataPoints
                             });
                         },
-                        delay: 1000
+                        delay: 1,
                         },
                         ticks: {
                             major: {

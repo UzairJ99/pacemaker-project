@@ -13,7 +13,6 @@ const Modal = ({ isShowing, hide, values }) => isShowing ? ReactDOM.createPortal
           </button>
         </div>
         <p>
-          {console.log(values)}
           <EgramPanel values = {values} />
         </p>
       </div>
