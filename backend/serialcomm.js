@@ -1,7 +1,6 @@
 var serialport = require('serialport');
 var express = require('express'); // used tosetup routes for backend processing
 var cors = require('cors');
-// const { database } = require('firebase-functions/lib/providers/firestore');
 var ByteLength = require('@serialport/parser-byte-length');
 var bodyParser = require('body-parser');
 
@@ -9,6 +8,7 @@ var bodyParser = require('body-parser');
 var port = new serialport('COM4',{
   baudRate: 115200,
 })
+
 /*
 Express routing handles packing and sending the data to the 
 pacemaker using post requests.  The data is taken from
@@ -23,14 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 const expressPort = 8080;
-//testing
-// function dec2bin(dec){
-//   return (dec >>> 0).toString(2);
-// }
-// var a = new Array(32);
-// a =[dec2bin(32)];
-// console.log(a);
-//
+
 app.post('/writeToPort', (req, res) => {
   var buffer = Buffer.alloc(44);
   var ATR_Signal;
@@ -42,8 +35,6 @@ app.post('/writeToPort', (req, res) => {
 
   // default values all set to zero
   var mode, currentMode, action = 0;
-  var currentMode = 0;
-  var action = 0;
   var LRL, URL, Amp, PW, AVD, Aamp, Vamp, APW, VPW = 0;
   var Sensitivity, RP, PVARP, Hysteresis, RateSmoothingUp,RateSmoothingDown, ActivityThreshold, ReactionTime,
       RecoveryTime, SensorRate = 0;
@@ -102,8 +93,6 @@ app.post('/writeToPort', (req, res) => {
   if(req.body.SensorRate){
     SensorRate = req.body.SensorRate;
   }
-
-  // console.log(currentMode);
   
   switch(currentMode){
     case 'VOO':
@@ -178,8 +167,10 @@ app.post('/writeToPort', (req, res) => {
     const parser = port.pipe(new ByteLength({length: 58}))
     console.log("read");
     writeToPort(buffer);
+
     parser.on('data', function (data) {
       port.read();
+
       var Mode = data.readInt8(0);
       var Atrial_Sensitivity = data.readFloatLE(1);
       var Ventricular_Sensitivity = data.readFloatLE(5);
@@ -200,11 +191,12 @@ app.post('/writeToPort', (req, res) => {
       var Recovery_Time = data.readFloatLE(33);
       var Atr_Pulse_Width =data.readInt8(37);
       var Atr_Pulse_Amplitude = data.readFloatLE(38);
+      
       vent_Signal = data.slice(42,50);
       VENT_Signal_val = (vent_Signal.readDoubleLE(0));
       ATR_Signal_val = (data.readDoubleLE(50));
       outputValues = [ATR_Signal_val, VENT_Signal_val, Mode, Atrial_Sensitivity, Ventricular_Sensitivity, Vent_Amplitude, LRL, Vent_Pulse_Width, Refactory_Period, PVARP, Hysteresis_enable, Hysteresis_Period, URL, Rate_Smoothing_Up, Rate_Smoothing_Down, Fixed_AV_Delay, Maximum_Sensor_limit, Activity_Threshold, Reaction_Time, Recovery_Time, Atr_Pulse_Width,Atr_Pulse_Amplitude];
-      //console.log(outputValues);
+
       res.send(outputValues);
     })
   }
@@ -214,8 +206,6 @@ app.post('/writeToPort', (req, res) => {
 app.listen(expressPort, process.env.IP, () => {
   console.log(`back end express server started on port: ${expressPort}`);
 });
-// Pipe the data into another stream (like a parser or standard out)
-// var lineStream = port.pipe(new Readline());
 
 const writeToPort = (buffer) => {
   port.write(buffer, function(err) {
@@ -225,21 +215,3 @@ const writeToPort = (buffer) => {
     console.log("message written");
   })
 }
-
-
-
-
-
-// port.on('readable', function (data) {
-//   port.read();
-//   //console.log(port.read()); 
-// })
-//Switches the port into "flowing mode"
-
-// lineStream.on('data', function (data) {
-//   console.log('Data:', data.toString('utf8'));
-// });
-
-
-
-
