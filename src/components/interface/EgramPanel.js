@@ -15,8 +15,8 @@ const EgramPanel = (props) => {
     const [mode, setMode] = React.useState('atrial');
 
     // grab data points 
-    var atrialValues = props.values[0];
-    var ventValues = props.values[1];
+    var atrialValues = (props.values[0])*3.3;
+    var ventValues = (props.values[1])*3.3;
 
     //console.log(atrialValues);
 
