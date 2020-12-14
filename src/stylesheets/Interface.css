@@ -21,3 +21,22 @@ h5 {
 #signoutBtn:hover {
     cursor: pointer;
 }
+
+.btnPanel {
+    margin: 20px;
+}
+
+.IOBtn {
+    width: 300px;
+    margin: 10px;
+    height: 60px;
+    font-size: 20px;
+}
+
+.inputField {
+    width: 300px;
+    height: 40px;
+    font-size: 22px;
+    padding: 10px;
+    text-align: center;
+}

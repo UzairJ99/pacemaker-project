@@ -2,6 +2,7 @@
 import React from 'react';
 import '../../stylesheets/Interface.css';
 import DeviceConnected from '../interface/DeviceConnected';
+import UtilityParameters from '../interface/UtilityParameters';
 
 const Parameters = () => {
     return (
@@ -9,7 +10,7 @@ const Parameters = () => {
             <DeviceConnected />
             <br></br>
             <h4>Utility Parameters</h4>   
-
+            <UtilityParameters />
         </div>
     );
 }

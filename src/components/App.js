@@ -46,7 +46,8 @@ function App(props) {
           <Route path={ROUTES.MAIN}>
             {
               // renders the page whether the user has logged in or not - otherwise redirect to login page
-              (authUser != null) ? <MainPage authUser={authUser} /> : <Redirect to={ROUTES.LOGIN} /> 
+              //(authUser != null) ? <MainPage authUser={authUser} /> : <Redirect to={ROUTES.LOGIN} /> 
+              <MainPage authUser={authUser} />
             }
           </Route>
           <Route path={ROUTES.LOGIN}>

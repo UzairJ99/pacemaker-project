@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from './modal';
 import useModal from './useModal';
+import '../../stylesheets/Interface.css';
 
 const VOO = () => {
     const {isShowing, toggle} = useModal();
@@ -90,18 +91,25 @@ const VOO = () => {
     return (
         // min and max from Pacemaker document; step is the incremental value
         <div>
+            <br></br>
             <h3>Programmable Parameters</h3>
             <br></br>
             <h5>Lower Rate Limit (ppm)</h5>
-            <input id = "LRL" type='number' min='30' max='170' step='5'></input>
+            <input className='inputField' id = "LRL" type='number' min='30' max='170' step='5'></input>
             <h5>Upper Rate Limit (ppm)</h5>
-            <input id="URL" type='number' min='50' max='175' step ='5'></input>
+            <input className='inputField' id="URL" type='number' min='50' max='175' step ='5'></input>
             <h5>Ventricular Amplitude (V)</h5>
-            <input id="Vamp" type='number' min='0' max='5' step='0.1'></input>
+            <input className='inputField' id="Vamp" type='number' min='0' max='5' step='0.1'></input>
             <h5>Ventricular Pulse Width (ms)</h5>
-            <input id="VPW" type='number' min='0.1' max='30' step='0.1'></input>
-            <Button variant="secondary" onClick={read}>Read</Button>
-            <Button variant="secondary" onClick={write}>Write</Button>
+            <input className='inputField' id="VPW" type='number' min='0.1' max='30' step='0.1'></input>
+            <br></br>
+            
+            <h3 style={{margin: '20px'}}>Pacemaker E-Grams</h3>
+            <div className='btnPanel'>
+                <Button className='IOBtn' variant="secondary" onClick={read}>Read</Button>
+                <Button className='IOBtn' variant="secondary" onClick={write}>Write</Button>
+            </div>
+            
             <Modal
                 isShowing={isShowing}
                 hide={toggle}
