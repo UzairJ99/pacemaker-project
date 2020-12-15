@@ -37,9 +37,9 @@ const EgramPanel = (props) => {
     function renderGraph(modeVal) {
         switch(modeVal) {
             case 'atrial':
-                return <AtrialGraph dataPoints={atrialValues} height={'300vh'} />;
+                return <AtrialGraph dataPoints={atrialValues} height={'300vh'} width={'40vw'} />;
             case 'ventricular':
-                return <VentricalGraph dataPoints={ventValues} height={'300vh'} />;
+                return <VentricalGraph dataPoints={ventValues} height={'300vh'} width={'40vw'} />;
             case 'both':
                 return (
                     <div>
@@ -60,7 +60,7 @@ const EgramPanel = (props) => {
                 <Button variant='secondary' className='graphBtn' onClick={() => {setMode('ventricular')}} active={mode === 'ventricular' ? true : false}>Ventricular</Button>
                 <Button variant='secondary' className='graphBtn' onClick={() => {setMode('both')}} active={mode === 'both' ? true : false}>Dual View</Button>
             </span>
-            <div style={{height: '50vh', left: '50px'}} >
+            <div style={{height: '45vh', left: '50px', overflowY: 'hide'}} >
             {
                 renderGraph(mode)
             }

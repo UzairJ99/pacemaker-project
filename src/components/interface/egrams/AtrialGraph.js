@@ -32,7 +32,7 @@ const AtrialGraph = (props) => {
     }, [])
 
     return (
-        <div>
+        <div style={{marginLeft: '250px'}}>
             <Line data={chartData} 
                 height={props.height}
                 width={props.width}
@@ -80,7 +80,7 @@ const AtrialGraph = (props) => {
                         },
                         ticks: {
                             max: 5,
-                            stepSize: 0.1
+                            stepSize: 1
                         }
                         } ]
                     }

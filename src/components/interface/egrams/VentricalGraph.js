@@ -31,7 +31,7 @@ const VentricalGraph = (props) => {
     }, [])
 
     return (
-        <div>
+        <div style={{marginLeft: '250px'}}>
             <Line data={chartData} 
                 height ={props.height}
                 width={props.width}
