@@ -1,5 +1,7 @@
 # About this Project
-3K04 Assignment - Pacemaker Project
+Pacemaker Device Control Manager application. Controls input to pacemaker device and reads output from the device. Visualizes realtime graphs and allows switching between different pacing modes.
+
+Built with React.js, Node.js, Firebase, Serialportio.js, Chart.js, MATLAB Simulink, and Bootstrap.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
