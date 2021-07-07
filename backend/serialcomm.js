@@ -1,8 +1,9 @@
 var serialport = require('serialport');
-var express = require('express'); // used tosetup routes for backend processing
+var express = require('express');
 var cors = require('cors');
 var ByteLength = require('@serialport/parser-byte-length');
 var bodyParser = require('body-parser');
+const { once } = require('events');
 
 // SERIAL COMMUNICATION
 var port = new serialport('COM4',{
@@ -24,76 +25,84 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 const expressPort = 8080;
 
-app.post('/writeToPort', (req, res) => {
-  var buffer = Buffer.alloc(44);
-  var ATR_Signal;
-  var VENT_Signal;
-  var ATR_Signal_val;
-  var VENT_Signal_val;
-
-  var outputValues = [];
-
-  // default values all set to zero
-  var mode, currentMode, action = 0;
-  var LRL, URL, Amp, PW, AVD, Aamp, Vamp, APW, VPW = 0;
-  var Sensitivity, RP, PVARP, Hysteresis, RateSmoothingUp,RateSmoothingDown, ActivityThreshold, ReactionTime,
+// global parameters change based on pacemode
+var ATR_Signal_val;
+var VENT_Signal_val;
+var outputValues = [];
+// default values all set to zero
+var mode, currentMode, action = 0;
+var LRL, URL, Amp, PW, AVD, Aamp, Vamp, APW, VPW = 0;
+var Sensitivity, RP, PVARP, Hysteresis, RateSmoothingUp,RateSmoothingDown, ActivityThreshold, ReactionTime,
       RecoveryTime, SensorRate = 0;
 
-  // set the variables from the post requet
-  currentMode = req.body.modeVal
-  action = req.body.action;
-  if(req.body.LRL){
-    LRL = req.body.LRL;
+
+/**
+ * Sets the parameters for the pacing mode.
+ * @param {object} params the request body 
+ */
+const setParameters = (params) => {
+  // set the variables from the post request
+  currentMode = params.modeVal
+  action = params.action;
+
+  // set the variables only if they exist in the request
+  if(params.LRL) {
+    LRL = params.LRL;
   } 
-  if(req.body.URL){
-    URL = req.body.URL;
+  if(params.URL) {
+    URL = params.URL;
   } 
-  if(req.body.Aamp){
-    Aamp = req.body.Aamp;
+  if(params.Aamp) {
+    Aamp = params.Aamp;
   } 
-  if(req.body.APW){
-    APW = req.body.APW;
+  if(params.APW) {
+    APW = params.APW;
   } 
-  if(req.body.Vamp){
-    Vamp = req.body.Vamp;
+  if(params.Vamp) {
+    Vamp = params.Vamp;
   } 
-  if(req.body.VPW){
-    VPW = req.body.VPW;
+  if(params.VPW) {
+    VPW = params.VPW;
   } 
-  if(req.body.AVD){
-    AVD = req.body.AVD;
+  if(params.AVD) {
+    AVD = params.AVD;
   }
-  if(req.body.Sensitivity){
-    Sensitivity = req.body.Sensitivity;
+  if(params.Sensitivity) {
+    Sensitivity = params.Sensitivity;
   } 
-  if(req.body.RP){
-    RP = req.body.RP;
+  if(params.RP) {
+    RP = params.RP;
   } 
-  if(req.body.PVARP){
-    PVARP = req.body.PVARP;
+  if(params.PVARP) {
+    PVARP = params.PVARP;
   }
-  if(req.body.Hysteresis){
-    Hysteresis = req.body.Hysteresis;
+  if(params.Hysteresis) {
+    Hysteresis = params.Hysteresis;
   }
-  if(req.body.RateSmoothingUp){
-    RateSmoothingUp = req.body.RateSmoothingUp;
+  if(params.RateSmoothingUp) {
+    RateSmoothingUp = params.RateSmoothingUp;
   }
-  if(req.body.RateSmoothingDown){
-    RateSmoothingDown = req.body.RateSmoothingDown;
+  if(params.RateSmoothingDown) {
+    RateSmoothingDown = params.RateSmoothingDown;
   }
-  if(req.body.ActivityThreshold){
-    ActivityThreshold = req.body.ActivityThreshold;
+  if(params.ActivityThreshold) {
+    ActivityThreshold = params.ActivityThreshold;
   } 
-  if(req.body.ReactionTime){
-    ReactionTime = req.body.ReactionTime;
+  if(params.ReactionTime) {
+    ReactionTime = params.ReactionTime;
   } 
-  if(req.body.RecoveryTime){
-    RecoveryTime = req.body.RecoveryTime;
+  if(params.RecoveryTime) {
+    RecoveryTime = params.RecoveryTime;
   }
-  if(req.body.SensorRate){
-    SensorRate = req.body.SensorRate;
+  if(params.SensorRate) {
+    SensorRate = params.SensorRate;
   }
-  
+}
+
+/**
+ * sets the pace mode for the pacemaker device and monitor.
+ */
+const setPacingMode = () => {
   switch(currentMode){
     case 'VOO':
       mode = 1;
@@ -128,11 +137,19 @@ app.post('/writeToPort', (req, res) => {
     default:
       mode = 1;
   } 
+}
 
-  // package data here
+/**
+ * packages the buffer with the values based on parameters and pacing mode.
+ * @returns {Buffer} data to send to pacemaker through serial comm
+ */
+const packageData = () => {
+  let buffer = Buffer.alloc(44);
+
   for(let i=2; i<44; i++){
     buffer[i] = 0;
   }
+
   buffer[0] = 0x16; //TO CHECK BEGININNG OF DATA
   buffer[1] = action; //FOR READING FROM SIMULINK/BOARD  
   buffer[2] = mode; //MODE
@@ -155,59 +172,15 @@ app.post('/writeToPort', (req, res) => {
   buffer.writeFloatLE(RecoveryTime,35);//Recovery Time in Minutes
   buffer[39] = APW; //Atrial Pulse Width
   buffer.writeFloatLE(Aamp,40); // Atr Pulse Amp
-  
-  // write
-  if(buffer[1]==0x55){
-    console.log('write')
-    writeToPort(buffer);
-  }
 
-  // read
-  if(buffer[1]==0x22){
-    const parser = port.pipe(new ByteLength({length: 58}))
-    console.log("read");
-    writeToPort(buffer);
+  return buffer;
+}
 
-    parser.on('data', function (data) {
-      port.read();
-
-      var Mode = data.readInt8(0);
-      var Atrial_Sensitivity = data.readFloatLE(1);
-      var Ventricular_Sensitivity = data.readFloatLE(5);
-      var Vent_Amplitude = data.readFloatLE(9);
-      var LRL = data.readInt8(13);
-      var Vent_Pulse_Width = data.readInt8(14);
-      var Refactory_Period = data.readInt16LE(15);
-      var PVARP = data.readInt16LE(17);
-      var Hysteresis_enable = data.readInt8(19);
-      var Hysteresis_Period= data.readInt16LE(20);
-      var URL=data.readInt8(22);
-      var Rate_Smoothing_Up = data.readInt8(23);
-      var Rate_Smoothing_Down = data.readInt8(24);
-      var Fixed_AV_Delay = data.readInt16LE(25);
-      var Maximum_Sensor_limit = data.readInt8(27);
-      var Activity_Threshold = data.readFloatLE(28);
-      var Reaction_Time = data.readInt8(32);
-      var Recovery_Time = data.readFloatLE(33);
-      var Atr_Pulse_Width =data.readInt8(37);
-      var Atr_Pulse_Amplitude = data.readFloatLE(38);
-      
-      vent_Signal = data.slice(42,50);
-      VENT_Signal_val = (vent_Signal.readDoubleLE(0));
-      ATR_Signal_val = (data.readDoubleLE(50));
-      outputValues = [ATR_Signal_val, VENT_Signal_val, Mode, Atrial_Sensitivity, Ventricular_Sensitivity, Vent_Amplitude, LRL, Vent_Pulse_Width, Refactory_Period, PVARP, Hysteresis_enable, Hysteresis_Period, URL, Rate_Smoothing_Up, Rate_Smoothing_Down, Fixed_AV_Delay, Maximum_Sensor_limit, Activity_Threshold, Reaction_Time, Recovery_Time, Atr_Pulse_Width,Atr_Pulse_Amplitude];
-
-      res.send(outputValues);
-    })
-  }
-})
-
-// initialize express port
-app.listen(expressPort, process.env.IP, () => {
-  console.log(`back end express server started on port: ${expressPort}`);
-});
-
-const writeToPort = (buffer) => {
+/**
+ * Writes the given buffer to the pacemaker device.
+ * @param {Buffer} buffer the serial packet 
+ */
+ const writeToPort = (buffer) => {
   port.write(buffer, function(err) {
     if (err) {
       return console.log('Error on write: ', err.message)
@@ -215,3 +188,77 @@ const writeToPort = (buffer) => {
     console.log("message written");
   })
 }
+
+/**
+ * Reads data from the serial port
+ * @returns {Array} output values of parameters
+ */
+const readFromPort = async () => {
+  const parser = port.pipe(new ByteLength({length: 58}));
+
+  parser.on('data', function (data) {
+    port.read();
+
+    // create seperate local variables to pass to frontend for graphs
+    let Mode = data.readInt8(0);
+    let Atrial_Sensitivity = data.readFloatLE(1);
+    let Ventricular_Sensitivity = data.readFloatLE(5);
+    let Vent_Amplitude = data.readFloatLE(9);
+    let LRL = data.readInt8(13);
+    let Vent_Pulse_Width = data.readInt8(14);
+    let Refactory_Period = data.readInt16LE(15);
+    let PVARP = data.readInt16LE(17);
+    let Hysteresis_enable = data.readInt8(19);
+    let Hysteresis_Period= data.readInt16LE(20);
+    let URL=data.readInt8(22);
+    let Rate_Smoothing_Up = data.readInt8(23);
+    let Rate_Smoothing_Down = data.readInt8(24);
+    let Fixed_AV_Delay = data.readInt16LE(25);
+    let Maximum_Sensor_limit = data.readInt8(27);
+    let Activity_Threshold = data.readFloatLE(28);
+    let Reaction_Time = data.readInt8(32);
+    let Recovery_Time = data.readFloatLE(33);
+    let Atr_Pulse_Width =data.readInt8(37);
+    let Atr_Pulse_Amplitude = data.readFloatLE(38);
+    
+    vent_Signal = data.slice(42,50);
+    VENT_Signal_val = (vent_Signal.readDoubleLE(0));
+    ATR_Signal_val = (data.readDoubleLE(50));
+    outputValues = [
+      ATR_Signal_val, VENT_Signal_val, Mode, Atrial_Sensitivity, 
+      Ventricular_Sensitivity, Vent_Amplitude, LRL, Vent_Pulse_Width, Refactory_Period, 
+      PVARP, Hysteresis_enable, Hysteresis_Period, URL, Rate_Smoothing_Up, Rate_Smoothing_Down, 
+      Fixed_AV_Delay, Maximum_Sensor_limit, Activity_Threshold, Reaction_Time, Recovery_Time, 
+      Atr_Pulse_Width,Atr_Pulse_Amplitude
+    ];
+  });
+
+  // wait for parser to finish reading the data
+  await once(parser, 'close');
+  return outputValues;
+}
+
+app.post('/writeToPort', (req, res) => {
+
+  setParameters(req.body);
+  setPacingMode();
+  // data to send over through serial comm
+  let buffer = packageData();
+  
+  // write
+  if(buffer[1]==0x55) {
+    writeToPort(buffer);
+  }
+
+  // read
+  if(buffer[1]==0x22) {
+    writeToPort(buffer);
+    let output = readFromPort();
+    res.send(output);
+  }
+})
+
+// initialize express port
+app.listen(expressPort, process.env.IP, () => {
+  console.log(`back end express server started on port: ${expressPort}`);
+});

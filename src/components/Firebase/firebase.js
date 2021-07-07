@@ -8,9 +8,9 @@ Confidential variables will all go into dotenv files for best practice.
 For now during development and testing they will be explicitly initialized here.
 */
 const firebaseConfig = {
-    apiKey: "AIzaSyCivkeY0dn5_rIx4IkE6wsbLQm6KwsXgrc",
-    authDomain: "k04-dcm.firebaseapp.com",
-    databaseURL: "https://k04-dcm.firebaseio.com",
+    apiKey: process.env.APIKEY,
+    authDomain: process.env.AUTHDOMAIN,
+    databaseURL: process.env.DATABASEURL,
     projectId: "k04-dcm",
     storageBucket: "k04-dcm.appspot.com",
     messagingSenderId: "499098820240",
@@ -23,13 +23,23 @@ class Firebase {
         this.auth = app.auth();
     }
 
-    // create user
+    /**
+     * Creates a user.
+     * @param {string} email 
+     * @param {string} password 
+     * @returns {object} user
+     */
     doCreateUser = (email, password) => {
         var authUser = this.auth.createUserWithEmailAndPassword(email, password);
         return authUser;
     }
 
-    // sign in user
+    /**
+     * logs in the user.
+     * @param {string} email 
+     * @param {string} password 
+     * @returns {object} user
+     */
     doSignIn = (email, password) => {
         var authUser = this.auth.signInWithEmailAndPassword(email, password);
         return authUser;
