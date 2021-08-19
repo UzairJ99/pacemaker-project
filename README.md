@@ -5,11 +5,19 @@ Built with React.js, Node.js, Firebase, Serialportio.js, Chart.js, MATLAB Simuli
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Requirements
+- MATLAB (simulink)
+- Pacemaker Arduino
+- USB for serial communication
+- Node.js
+- Modern web browser
+
 ## Run the App
 
 To run the application in development mode, you'll need node.js installed on your computer.
 Run `npm install` in the terminal once the repo has been cloned.
 This will install any dependencies required for the application.
+NOTE: You will need MATLAB with Simulink installed to be able to run the state machine simulation.
 
 ### `npm start`
 
